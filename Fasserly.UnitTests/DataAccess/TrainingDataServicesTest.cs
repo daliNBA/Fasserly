@@ -23,7 +23,7 @@ namespace Fasserly.UnitTests.DataAccess
             using (var ds = new TrainingDataServices(options))
             {
                 var trainings = await ds.GetAllTraining();
-                Assert.AreEqual(2, trainings.Count());
+                Assert.AreEqual(3, trainings.Count());
             }
         }
     }
