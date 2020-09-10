@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fasserly.Database", "Fasserly.Database\Fasserly.Database.csproj", "{160CA664-8832-4607-A7D2-E70BCDCE2C2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fasserly.Database", "Fasserly.Database\Fasserly.Database.csproj", "{160CA664-8832-4607-A7D2-E70BCDCE2C2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fasserly.Infrastructure", "Fasserly.Infrastructure\Fasserly.Infrastructure.csproj", "{DFCF2E19-C08D-40DA-9FAC-C8CFFCF744BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fasserly.Infrastructure", "Fasserly.Infrastructure\Fasserly.Infrastructure.csproj", "{DFCF2E19-C08D-40DA-9FAC-C8CFFCF744BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fasserly.Migrator", "Fasserly.Migrator\Fasserly.Migrator.csproj", "{C62F965D-F3E1-41E1-94CE-C32B82AB0E34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fasserly.Migrator", "Fasserly.Migrator\Fasserly.Migrator.csproj", "{C62F965D-F3E1-41E1-94CE-C32B82AB0E34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fasserly.UnitTests", "Fasserly.UnitTests\Fasserly.UnitTests.csproj", "{2A88E841-3969-4BC8-82FC-A2B7261D3F61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fasserly.UnitTests", "Fasserly.UnitTests\Fasserly.UnitTests.csproj", "{2A88E841-3969-4BC8-82FC-A2B7261D3F61}"
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "Fasserly.Privisionning", "Fasserly.Privisionning\Fasserly.Privisionning.deployproj", "{C68338DA-62DE-4EB0-B122-3190A908E6E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fasserly.WebUI", "Fasserly.WebUI\Fasserly.WebUI.csproj", "{0319323F-3284-46DA-BFE3-71F3F6E093B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fasserly.WebUI", "Fasserly.WebUI\Fasserly.WebUI.csproj", "{0319323F-3284-46DA-BFE3-71F3F6E093B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

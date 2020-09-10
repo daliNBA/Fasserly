@@ -5,6 +5,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="client-app\src\NewFolder\**" />
+    <Content Remove="client-app\src\NewFolder\**" />
+    <EmbeddedResource Remove="client-app\src\NewFolder\**" />
+    <None Remove="client-app\src\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="client-app\src\app\common\form\inputDate.tsx" />
+    <None Remove="client-app\src\app\common\form\inputSelect.tsx" />
+    <None Remove="client-app\src\app\common\form\inputText.tsx" />
+    <None Remove="client-app\src\app\common\form\inputTextArea.tsx" />
+    <None Remove="client-app\src\app\common\option.tsx" />
+    <None Remove="client-app\src\app\common\options\BusinessOptions.tsx" />
+    <None Remove="client-app\src\app\common\options\DesignOptions.tsx" />
+    <None Remove="client-app\src\app\common\util\util.ts" />
+    <None Remove="client-app\src\app\layout\Loading.tsx" />
+    <None Remove="client-app\src\app\layout\NoFound.tsx" />
+    <None Remove="client-app\src\app\repositories\trainingRepository.ts" />
+    <None Remove="client-app\src\features\Nav\Nav-drp-menu\IT_Menu.tsx" />
+    <None Remove="client-app\src\features\Nav\navBar.tsx" />
+    <None Remove="client-app\src\features\Training\detail.tsx" />
+    <None Remove="client-app\src\features\Training\form.tsx" />
+    <None Remove="client-app\src\features\Training\trainingItem.tsx" />
+    <None Remove="client-app\src\features\Training\trainingItem\trainingDetailHeader.tsx" />
+    <None Remove="client-app\src\features\Training\trainingItem\trainingDetailInfo.tsx" />
+    <None Remove="client-app\src\features\Training\trainingItem\trainingDetailSideBar.tsx" />
+    <None Remove="client-app\src\features\Training\trainingList.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.5" />
   </ItemGroup>
@@ -13,5 +43,27 @@
     <ProjectReference Include="..\Fasserly.Infrastructure\Fasserly.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <TypeScriptCompile Include="client-app\src\app\common\form\inputDate.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\form\inputSelect.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\form\inputText.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\form\inputTextArea.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\options\BusinessOptions.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\options\DesignOptions.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\options\ITOptions.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\util\util.ts" />
+    <TypeScriptCompile Include="client-app\src\app\layout\Loading.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\layout\NoFound.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\repositories\trainingRepository.ts" />
+    <TypeScriptCompile Include="client-app\src\features\Nav\Nav-drp-menu\IT_Menu.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Nav\navBar.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\detail.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\form.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\trainingItem.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\trainingItem\trainingDetailHeader.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\trainingItem\trainingDetailInfo.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\trainingItem\trainingDetailSideBar.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\trainingList.tsx" />
+  </ItemGroup>
 
 </Project>
