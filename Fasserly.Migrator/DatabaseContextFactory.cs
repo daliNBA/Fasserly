@@ -16,7 +16,6 @@ namespace Fasserly.Migrator
                                .SetBasePath(path)
                                .AddJsonFile("local.settings.json");
 
-
             var configuration = builder.Build();
 
             //var configuration = new ConfigurationBuilder().AddEnvironmentVariables().AddUserSecrets("LearnToTech.Migration").Build();

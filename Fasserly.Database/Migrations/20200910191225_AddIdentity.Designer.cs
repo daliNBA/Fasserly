@@ -4,14 +4,16 @@ using Fasserly.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fasserly.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200910191225_AddIdentity")]
+    partial class AddIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,6 +175,9 @@ namespace Fasserly.Database.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("TrainingId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -189,6 +194,8 @@ namespace Fasserly.Database.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("TrainingId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -344,6 +351,13 @@ namespace Fasserly.Database.Migrations
                     b.HasOne("Fasserly.Database.Entities.Promotion", null)
                         .WithMany("trainings")
                         .HasForeignKey("PromotionId");
+                });
+
+            modelBuilder.Entity("Fasserly.Database.Entities.UserFasserly", b =>
+                {
+                    b.HasOne("Fasserly.Database.Entities.Training", null)
+                        .WithMany("UserFasserlies")
+                        .HasForeignKey("TrainingId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

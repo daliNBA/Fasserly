@@ -1,16 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>b2ac284b-7ef9-4ba8-bc0a-6ee5703414cc</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="client-app\src\NewFolder\**" />
     <Content Remove="client-app\src\NewFolder\**" />
     <EmbeddedResource Remove="client-app\src\NewFolder\**" />
     <None Remove="client-app\src\NewFolder\**" />
   </ItemGroup>
-
   <ItemGroup>
     <None Remove="client-app\src\app\common\form\inputDate.tsx" />
     <None Remove="client-app\src\app\common\form\inputSelect.tsx" />
@@ -33,16 +32,15 @@
     <None Remove="client-app\src\features\Training\trainingItem\trainingDetailSideBar.tsx" />
     <None Remove="client-app\src\features\Training\trainingList.tsx" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.8" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Fasserly.Infrastructure\Fasserly.Infrastructure.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <TypeScriptCompile Include="client-app\src\app\common\form\inputDate.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputSelect.tsx" />
@@ -65,5 +63,4 @@
     <TypeScriptCompile Include="client-app\src\features\Training\trainingItem\trainingDetailSideBar.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\trainingList.tsx" />
   </ItemGroup>
-
 </Project>

@@ -1,15 +1,23 @@
 using Fasserly.Database;
+using Fasserly.Database.Entities;
+using Fasserly.Database.Interface;
 using Fasserly.Infrastructure.DataAccess;
+using Fasserly.Infrastructure.Security;
 using Fasserly.WebUI.MiddleWare;
 using Fasserly.WebUI.ViewModels;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Fasserly.WebUI
 {
@@ -32,14 +40,47 @@ namespace Fasserly.WebUI
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
                 });
             });
+
             var connectionString = Configuration.GetConnectionString("FasserlyDatabase");
             services.AddDbContext<DatabaseContext>(option => option.UseSqlServer(connectionString, x => x.CommandTimeout(180)));
             services.AddMvc();
+
             services.AddScoped(typeof(TrainingDataServices));
+            services.AddScoped(typeof(UserDataServices));
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
+
             services.AddControllersWithViews();
-            services.AddControllers()
+            services.AddControllers(opt =>
+           {
+               //Ajouter l'athentification security
+               var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+               opt.Filters.Add(new AuthorizeFilter(policy));
+
+           })
                 .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<TrainingViewModel>(); });
             services.AddControllersWithViews();
+
+            //Add identity Core
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
+
+            var builder = services.AddIdentityCore<UserFasserly>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<DatabaseContext>();
+            identityBuilder.AddSignInManager<SignInManager<UserFasserly>>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = key,
+                        ValidateAudience = false,
+                        ValidateIssuer = false
+                    };
+                });
+
+
             //services.AddSpaStaticFiles(configuration =>
             //{
             //    configuration.RootPath = "ClientApp/build";
@@ -63,12 +104,16 @@ namespace Fasserly.WebUI
                 app.UseHsts();
             }
 
+            //Order is important
+            app.UseRouting();
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             //app.UseSpaStaticFiles();
-
-            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {

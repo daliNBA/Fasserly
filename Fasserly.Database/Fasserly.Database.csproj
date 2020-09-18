@@ -7,10 +7,15 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200630204813_test.cs" />
     <Compile Remove="Migrations\20200630204813_test.Designer.cs" />
+    <Compile Remove="Migrations\20200911120912_cancelTrainingLink.cs" />
+    <Compile Remove="Migrations\20200911120912_cancelTrainingLink.Designer.cs" />
+    <Compile Remove="Migrations\20200916120443_removeComment.cs" />
+    <Compile Remove="Migrations\20200916120443_removeComment.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="System.Spatial" Version="5.8.4" />
   </ItemGroup>
 

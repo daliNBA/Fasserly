@@ -2,6 +2,7 @@
 using Fasserly.Infrastructure.DataAccess;
 using Fasserly.WebUI.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,12 @@ namespace Fasserly.WebUI.Controllers
     public class HomeController : Controller
     {
         protected readonly TrainingDataServices dataService;
-        public HomeController(TrainingDataServices dataService)
+        protected readonly UserDataServices userdataService;
+
+        public HomeController(TrainingDataServices dataService, UserDataServices userdataService)
         {
             this.dataService = dataService;
+            this.userdataService = userdataService;
         }
 
         [HttpGet]
@@ -24,13 +28,14 @@ namespace Fasserly.WebUI.Controllers
         {
             var result = new List<TrainingViewModel>();
             var trainings = await dataService.GetAllTraining();
+            var user = await userdataService.GetUserByEmail("dali.mahdoui@gmail.com", "Pa$$W0rd");
             foreach (var training in trainings)
                 result.Add(new TrainingViewModel(training));
             return result;
         }
 
         // GET api/Training/2
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]   
         public async Task<ActionResult<Training>> Get(Guid id)
         {
             var training = await dataService.GetTrainingById(id);

@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fasserly.Database.Entities
 {
-    public class UserFasserly
+    public class UserFasserly : IdentityUser
     {
-        public Guid UserFasserlyId { get; set; }
-        public string Name { get; set; }
+        public string DisplayName { get; set; }
+
+        [NotMapped]
+        public string Token { get; set; }
+
+        [NotMapped]
+        public object Image { get; set; }
     }
 }

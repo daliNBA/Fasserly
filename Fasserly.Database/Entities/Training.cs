@@ -18,7 +18,7 @@ namespace Fasserly.Database.Entities
 
         public string Language { get; set; }
         public bool IsActive { get; set; }
-        public List<UserFasserly> UserFasserlies { get; set; } = new List<UserFasserly>();
+        //public List<UserFasserly> UserFasserlies { get; set; } = new List<UserFasserly>();
         public Category category { get; set; }
         public List<Comment> comments { get; set; } = new List<Comment>();
     }

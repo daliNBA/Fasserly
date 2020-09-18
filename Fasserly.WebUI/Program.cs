@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Fasserly.Database;
+using Fasserly.Database.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Fasserly.WebUI
 {
@@ -23,8 +21,9 @@ namespace Fasserly.WebUI
                 try
                 {
                     var context = service.GetRequiredService<DatabaseContext>();
+                    var userManager = service.GetRequiredService<UserManager<UserFasserly>>();
                     context.Database.Migrate();
-                    Seed.SeedData(context);
+                    Seed.SeedData(context, userManager).Wait();
                 }
                 catch (Exception ex)
                 {

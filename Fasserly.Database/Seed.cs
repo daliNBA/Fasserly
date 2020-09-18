@@ -1,15 +1,41 @@
 ﻿using Fasserly.Database.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fasserly.Database
 {
     public class Seed
     {
-        public static void SeedData(DatabaseContext context)
+        public static async Task SeedData(DatabaseContext context, UserManager<UserFasserly> userManager)
         {
-            if (context.Trainings.Count() == 0)
+            if(!userManager.Users.Any())
+            {
+                var users = new List<UserFasserly>
+                {
+                    new UserFasserly
+                    {
+                        DisplayName ="Dali",
+                        Email = "dali.mahdoui@gmail.com",
+                        UserName = "dalinba"
+                    },
+                      new UserFasserly
+                    {
+                        DisplayName ="Rachida",
+                        Email = "rachidachtioui13@yahoo.fr",
+                        UserName = "rachida"
+                    }
+                };
+
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "pa$$W0rd");
+                }
+            }
+
+            if (context.Trainings.Count() == 2)
             {
                 var trainings = new List<Training>
                 {
