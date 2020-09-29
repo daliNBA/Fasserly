@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -12,14 +10,14 @@ namespace Fasserly.WebUI.MiddleWare
 {
     public class ErrorHandlingMiddleWare
     {
+        private readonly RequestDelegate _next;
+        private readonly ILogger<ErrorHandlingMiddleWare> _logger;
+
         public ErrorHandlingMiddleWare(RequestDelegate next, ILogger<ErrorHandlingMiddleWare> logger)
         {
             _next = next;
             _logger = logger;
         }
-
-        public RequestDelegate _next { get; }
-        public ILogger<ErrorHandlingMiddleWare> _logger { get; }
 
         public async Task Invoke(HttpContext context)
         {
@@ -40,13 +38,13 @@ namespace Fasserly.WebUI.MiddleWare
             switch (ex)
             {
                 case RestException re:
-                    logger.LogError(ex, "Rest Error");
+                    logger.LogError(ex, "REST ERROR");
                     errors = re.Errors;
                     context.Response.StatusCode = (int)re.Code;
                     break;
                 case Exception e:
-                    logger.LogError(ex, "Server Error");
-                    errors = string.IsNullOrWhiteSpace(e.Message) ? "Error" : e.Message;
+                    logger.LogError(ex, "SERVER ERRROR");
+                    errors = string.IsNullOrWhiteSpace(e.Message) ? "Errror" : e.Message;
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }

@@ -12,5 +12,9 @@ namespace Fasserly.Database.Entities
 
         [NotMapped]
         public object Image { get; set; }
+
+        [NotMapped]
+        public string Password { get; set; }
+
     }
 }

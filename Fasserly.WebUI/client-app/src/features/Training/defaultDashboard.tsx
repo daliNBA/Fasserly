@@ -3,16 +3,18 @@ import { Grid, GridColumn } from 'semantic-ui-react';
 import TrainingsList from './trainingList';
 import { observer } from 'mobx-react-lite';
 import Loading from '../../app/layout/Loading';
-import TrainingRepository from '../../app/repositories/trainingRepository'
+import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 
 const TrainingDashboard: React.FC = () => {
 
-    const trainingStore = useContext(TrainingRepository);
-    useEffect(() => {
-        trainingStore.trainingList();
-    }, [trainingStore]);
+    const baseRepository = useContext(BaseRepositoryContext);
+    const { trainingList, loading } = baseRepository.trainingsRepository;
 
-    if (trainingStore.loading) return <Loading content={"Loading.."} />
+    useEffect(() => {
+        trainingList();
+    }, [trainingList]);
+
+    if (loading) return <Loading content={"Loading.."} />
 
     return (
         <Grid>

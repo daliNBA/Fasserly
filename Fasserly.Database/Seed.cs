@@ -31,7 +31,7 @@ namespace Fasserly.Database
 
                 foreach (var user in users)
                 {
-                    await userManager.CreateAsync(user, "pa$$W0rd");
+                    await userManager.CreateAsync(user, "Pa$$W0rd");
                 }
             }
 

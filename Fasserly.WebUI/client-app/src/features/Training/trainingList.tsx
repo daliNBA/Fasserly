@@ -1,12 +1,12 @@
 ﻿import React, { useContext, Fragment } from 'react';
 import { Label, Item } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
-import TrainingRepository from '../../app/repositories/trainingRepository';
 import TrainingItem from './trainingItem';
+import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 
 const TrainingsList = () => {
-    const trainingStore = useContext(TrainingRepository);
-    const { trainingByDate } = trainingStore;
+    const baseRepository = useContext(BaseRepositoryContext);
+    const { trainingByDate } = baseRepository.trainingsRepository;
     return (
         <Item.Group divided>
             <Fragment>

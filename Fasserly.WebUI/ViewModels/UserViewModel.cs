@@ -9,8 +9,6 @@ namespace Fasserly.WebUI.ViewModels
         public string Password { get; set; }
         public string UserName { get; set; }
         public string DisplayName { get; set; }
-        public string Token { get; set; }
-        public object Image { get; set; }
 
         public UserViewModel(UserFasserly user)
         {

@@ -1,13 +1,17 @@
-﻿import { observable, action, computed, runInAction, decorate } from 'mobx'
+﻿import { observable, action, computed, runInAction } from 'mobx'
 import { createContext } from 'react';
-import agent from '../agent/trainingAgent';
+import agent from '../agent/agent';
 import { ITraining } from '../models/ITraining';
 import { history } from '../../index';
 import { toast } from 'react-toastify';
+import { BaseRepository } from './baseRepository'
 
-////configure({ enforceActions: "always" });
+export default class TrainingRepository {
 
-class TrainingRepository {
+    _baseRepository: BaseRepository;
+    constructor(baseRepository: BaseRepository) {
+        this._baseRepository = baseRepository;
+    }
 
     @observable training: ITraining | null = null;
     @observable loading = false;
@@ -100,7 +104,6 @@ class TrainingRepository {
             runInAction(() => {
                 console.log(e);
                 this.submitting = false;
-
             })
         }
     }
@@ -140,5 +143,3 @@ class TrainingRepository {
         this.training = null;
     }
 }
-
-export default createContext(new TrainingRepository());

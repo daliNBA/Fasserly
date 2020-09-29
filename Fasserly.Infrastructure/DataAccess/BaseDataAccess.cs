@@ -31,7 +31,6 @@ namespace Fasserly.Infrastructure.DataAccess
         {
             Dispose(true);
         }
-
         #endregion
     }
 }

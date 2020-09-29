@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Fasserly.WebUI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         protected readonly UserDataServices dataService;
         public UserController(UserDataServices dataService)
@@ -19,9 +17,9 @@ namespace Fasserly.WebUI.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<UserFasserly>> Login(string mail, string password)
+        public async Task<ActionResult<UserFasserly>> Login(Login.Query query)
         {
-            return await dataService.GetUserByEmail(mail, password);
+            return await Mediator.Send(query);
         }
 
         [AllowAnonymous]

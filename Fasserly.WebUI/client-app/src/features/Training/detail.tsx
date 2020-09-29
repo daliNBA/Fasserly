@@ -1,11 +1,11 @@
 ﻿import React, { useContext, useEffect } from 'react';
 import { Button, Card, Image, Label } from 'semantic-ui-react';
-import TrainingRepository from '../../app/repositories/trainingRepository';
 import { observer } from 'mobx-react-lite';
 import { RouteComponentProps } from 'react-router';
 import Loading from '../../app/layout/Loading';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
+import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 
 
 interface DetailsParams {
@@ -13,8 +13,8 @@ interface DetailsParams {
 }
 const TrainingDetails: React.FC<RouteComponentProps<DetailsParams>> = ({ match, history }) => {
 
-    const trainingStore = useContext(TrainingRepository);
-    const { training, loadTraining, loading } = trainingStore;
+    const baseRepository = useContext(BaseRepositoryContext);
+    const { training, loadTraining, loading, deleteTraining} = baseRepository.trainingsRepository;
 
     useEffect(() => {
         loadTraining(match.params.id);
@@ -43,7 +43,7 @@ const TrainingDetails: React.FC<RouteComponentProps<DetailsParams>> = ({ match, 
             </Card.Content>
             <Card.Content extra>
                 <Button as={Link} to={`/manage/${training.trainingId}`} /*onClick={() => trainingStore.editMode = true}*/ color='green'>Edit</Button>
-                <Button onClick={() => trainingStore.deleteTraining(training?.trainingId)} color='red'>Delete</Button>
+                <Button onClick={() => deleteTraining(training?.trainingId)} color='red'>Delete</Button>
                 <Button onClick={() => history.push('/trainings')} > Cancel</Button>
             </Card.Content>
         </Card>

@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MediatR;
+using Fasserly.Infrastructure.Mediator.TrainingMediator;
 
 namespace Fasserly.WebUI
 {
@@ -43,13 +45,14 @@ namespace Fasserly.WebUI
 
             var connectionString = Configuration.GetConnectionString("FasserlyDatabase");
             services.AddDbContext<DatabaseContext>(option => option.UseSqlServer(connectionString, x => x.CommandTimeout(180)));
+            services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddMvc();
 
             services.AddScoped(typeof(TrainingDataServices));
             services.AddScoped(typeof(UserDataServices));
+            services.AddScoped(typeof(Login));
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
-
             services.AddControllersWithViews();
             services.AddControllers(opt =>
            {
@@ -58,7 +61,7 @@ namespace Fasserly.WebUI
                opt.Filters.Add(new AuthorizeFilter(policy));
 
            })
-                .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<TrainingViewModel>(); });
+                .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Create>(); });
             services.AddControllersWithViews();
 
             //Add identity Core
@@ -95,14 +98,14 @@ namespace Fasserly.WebUI
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            //else
+            //{
+            //    app.UseExceptionHandler("/Error");
+            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            //    app.UseHsts();
+            //}
 
             //Order is important
             app.UseRouting();

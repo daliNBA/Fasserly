@@ -2,7 +2,6 @@
 using Fasserly.Database.Entities;
 using Fasserly.Database.Interface;
 using Fasserly.Infrastructure.Error;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;

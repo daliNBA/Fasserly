@@ -3,7 +3,6 @@ import { TrainingFormValues } from '../../app/models/ITraining';
 import { Form, Button, Segment, Grid, GridColumn } from 'semantic-ui-react';
 import { v4 as uuid } from 'uuid';
 import { observer } from 'mobx-react-lite';
-import TrainingRepository from '../../app/repositories/trainingRepository';
 import { RouteComponentProps } from 'react-router-dom';
 import { Form as FinalFrom, Field } from 'react-final-form'
 import TextInput from '../../app/common/form/inputText';
@@ -13,6 +12,7 @@ import InputSelect from '../../app/common/form/inputSelect';
 import InputDate from '../../app/common/form/inputDate';
 import { combineTimeAndDate } from '../../app/common/util/util';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate'
+import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 
 const validate = combineValidators({
     label: isRequired({ message: 'lable est obligatoir' }),
@@ -30,8 +30,13 @@ interface IDetailParams {
 }
 const TrainingEdit: React.FC<RouteComponentProps<IDetailParams>> = ({ match, history }) => {
 
-    const trainingStore = useContext(TrainingRepository);
-    const { submitting, loadTraining } = trainingStore;
+    const baseRepository = useContext(BaseRepositoryContext);
+    const {
+            submitting,
+            loadTraining,
+            createTraining,
+            editTraining 
+          } = baseRepository.trainingsRepository;
 
     const [training, setTraining] = useState(new TrainingFormValues());
     const [loading, setLoading] = useState(false);
@@ -55,9 +60,9 @@ const TrainingEdit: React.FC<RouteComponentProps<IDetailParams>> = ({ match, his
                 trainingId: uuid()
             };
             console.log(training)
-            trainingStore.createTraining(newTraining);
+            createTraining(newTraining);
         } else {
-            trainingStore.editTraining(training);
+            editTraining(training);
         }
     }
 

@@ -1,10 +1,13 @@
-﻿import React from 'react';
-import { Menu, Input, Button, Dropdown, Icon } from 'semantic-ui-react';
+﻿import React, { useContext } from 'react';
+import { Menu, Input, Button, Dropdown, Icon, Header, Image } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { ITList } from '../../app/common/options/ITOptions'
+import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 
 const NavBar: React.FC = () => {
+    const baseReposiitory = useContext(BaseRepositoryContext);
+    const { isLoggedIn, user, logout } = baseReposiitory.userRepository;
     return (
         <div>
             <Menu pointing>
@@ -32,12 +35,25 @@ const NavBar: React.FC = () => {
                         </Button.Content>
                     </Button>
                 </Menu.Item>
-                <Menu.Item>
-                    <div>
-                        <Button basic color='blue'>Sign in</Button>
-                        <Button color='red'>Sign up</Button>
-                    </div>
-                </Menu.Item>
+                {isLoggedIn && user ?
+                    (
+                        <Menu.Item>
+                            <Image avatar spaced='right' src={user.image || '/assets/Logo.png'} />
+                            <Dropdown pointing='top right' text='User' >
+                                <Dropdown.Menu>
+                                    <Dropdown.Item as={Link} to={`/profile/username`} text='My profile' icon='user' />
+                                    <Dropdown.Item onClick={logout} text='Logout' icon='power' />
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Menu.Item>
+                    ) : (
+                        <Menu.Item>
+                            <div>
+                                <Button as={Link} to='/login' basic color='blue'>Sign in</Button>
+                                <Button color='red'>Sign up</Button>
+                            </div>
+                        </Menu.Item>)
+                }
             </Menu>
         </div >
     );
