@@ -16,7 +16,7 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
 {
     public class Register
     {
-        public class Command : IRequest<UserFasserly>
+        public class Command : IRequest<User>
         {
             public string Email { get; set; }
             public string Password { get; set; }
@@ -35,7 +35,7 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
             }
         }
 
-        public class Handler : BaseDataAccess, IRequestHandler<Command, UserFasserly>
+        public class Handler : BaseDataAccess, IRequestHandler<Command, User>
         {
             private readonly UserManager<UserFasserly> _userManager;
             private readonly IJwtGenerator _jwtGenerator;
@@ -46,7 +46,7 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
                 _jwtGenerator = jwtGenerator;
             }
 
-            public async Task<UserFasserly> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<User> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (await context.Users.AnyAsync(x => x.Email == request.Email))
                     throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exists" });
@@ -64,18 +64,17 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
 
                 if (result.Succeeded)
                 {
-                    return new UserFasserly
+                    return new User
                     {
                         DisplayName=user.DisplayName,
                         Token = _jwtGenerator.CreateToken(user),
                         Image = null,
-                        UserName = user.UserName,
+                        Username = user.UserName,
                     };
                 }
 
                 throw new Exception("Problem saving changes");
             }
         }
-
     }
 }

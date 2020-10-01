@@ -11,22 +11,16 @@ namespace Fasserly.WebUI.Controllers
 {
     public class UserController : BaseController
     {
-        protected readonly UserDataServices dataService;
-        public UserController(UserDataServices dataService)
-        {
-            this.dataService = dataService;
-        }
-
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<UserFasserly>> Login(Login.Query query)
+        public async Task<ActionResult<User>> Login(Login.Query query)
         {
             return await Mediator.Send(query);
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserFasserly>> Register(Register.Command command)
+        public async Task<ActionResult<User>> Register(Register.Command command)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -35,9 +29,9 @@ namespace Fasserly.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<UserFasserly>> CurrentUser()
+        public async Task<ActionResult<User>> CurrentUser()
         {
-            return await dataService.GetCurrentUser();
+            return await Mediator.Send(new CurrentUser.Query());
         }
     }
 }

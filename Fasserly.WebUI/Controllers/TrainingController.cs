@@ -1,20 +1,17 @@
 ﻿using Fasserly.Database.Entities;
-using Fasserly.Infrastructure.DataAccess;
-using Fasserly.Infrastructure.Error;
 using Fasserly.Infrastructure.Mediator.TrainingMediator;
-using Fasserly.WebUI.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Fasserly.WebUI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class TrainingController : BaseController
     {
         public TrainingController()
@@ -25,8 +22,6 @@ namespace Fasserly.WebUI.Controllers
         public async Task<ActionResult<IEnumerable<Training>>> Get()
         {
             return await Mediator.Send(new List.Query());
-            //throw new RestException(HttpStatusCode.NotFound, new { training = "Not TESTED" });
-
         }
 
         // GET api/Training/2

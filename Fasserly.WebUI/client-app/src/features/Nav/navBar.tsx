@@ -28,9 +28,10 @@ const NavBar: React.FC = () => {
                 <Menu.Item >
                     <Input icon='search' placeholder='Search...' position='left' />
                 </Menu.Item>
-                <Menu.Item>
+                {isLoggedIn && user && <Menu.Item>
                     <Button as={NavLink} to='/createTraining' content='Create Training' />
                 </Menu.Item>
+                }
                 <Menu.Item position='right'>
                     <Button animated='vertical' margin='10'>
                         <Button.Content hidden>Basket</Button.Content>
@@ -43,7 +44,7 @@ const NavBar: React.FC = () => {
                     (
                         <Menu.Item>
                             <Image avatar spaced='right' src={user.image || '/assets/Logo.png'} />
-                            <Dropdown pointing='top right' text='User' >
+                            <Dropdown pointing='top right' text={user.displayName}>
                                 <Dropdown.Menu>
                                     <Dropdown.Item as={Link} to={`/profile/username`} text='My profile' icon='user' />
                                     <Dropdown.Item onClick={logout} text='Logout' icon='power' />

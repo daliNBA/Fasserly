@@ -49,7 +49,6 @@ namespace Fasserly.WebUI
             services.AddMvc();
 
             services.AddScoped(typeof(TrainingDataServices));
-            services.AddScoped(typeof(UserDataServices));
             services.AddScoped(typeof(Login));
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();

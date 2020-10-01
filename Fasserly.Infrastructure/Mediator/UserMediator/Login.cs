@@ -3,6 +3,7 @@ using Fasserly.Database.Entities;
 using Fasserly.Database.Interface;
 using Fasserly.Infrastructure.DataAccess;
 using Fasserly.Infrastructure.Error;
+using Fasserly.Infrastructure.Mediator.UserMediator;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -13,10 +14,12 @@ using System.Threading.Tasks;
 
 public class Login
 {
-    public class Query : IRequest<UserFasserly>
+    public class Query : IRequest<User>
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public string Token { get; set; }
+        public string Image { get; set; }
     }
 
     public class LoginValidation : AbstractValidator<Query>
@@ -28,20 +31,20 @@ public class Login
         }
     }
 
-    public class Handler : BaseDataAccess, IRequestHandler<Query, UserFasserly>
+    public class Handler : IRequestHandler<Query, User>
     {
         private readonly UserManager<UserFasserly> _userManager;
         private readonly SignInManager<UserFasserly> _signInManager;
         private readonly IJwtGenerator _jwtGenerator;
 
-        public Handler(DbContextOptions<DatabaseContext> options, UserManager<UserFasserly> userManager, SignInManager<UserFasserly> signInManager, IJwtGenerator jwtGenerator) : base(options)
+        public Handler(UserManager<UserFasserly> userManager, SignInManager<UserFasserly> signInManager, IJwtGenerator jwtGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
         }
 
-        public async Task<UserFasserly> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<User> Handle(Query request, CancellationToken cancellationToken)
         {
 
             var user = await _userManager.FindByEmailAsync(request.Email);
@@ -50,9 +53,9 @@ public class Login
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
             if(result.Succeeded)
             {
-                return new UserFasserly
+                return new User
                 {
-                    UserName = user.UserName,
+                    Username = user.UserName,
                     Token = _jwtGenerator.CreateToken(user),
                     DisplayName = user.DisplayName,
                     Image = null,
