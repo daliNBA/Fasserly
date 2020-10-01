@@ -12,7 +12,9 @@ export default class UserRepository {
     }
 
     @observable user: IUser | null = null;
+
     @computed get isLoggedIn() { return !!this.user }
+
     @action login = async (values: IUserFromValues) => {
         try {
             const user = await agent.userAgent.login(values)
@@ -20,12 +22,40 @@ export default class UserRepository {
                 this.user = user;
             })
             this._baseRepository.commonRepository.setToken(user.token);
+            this._baseRepository.modalRepository.closeModal();
             history.push('/trainings');
             console.log(this.user);
-        } catch (error)
-        {
+        } catch (error) {
             console.log(error);
             throw error;
+        }
+    }
+
+    @action register = async (values: IUserFromValues) => {
+        try {
+            const user = await agent.userAgent.register(values);
+            this._baseRepository.commonRepository.setToken(user.token);
+            this._baseRepository.modalRepository.closeModal();
+            runInAction(() => {
+                this.user = user;
+            })
+            this._baseRepository.commonRepository.setToken(user.token);
+            history.push('/trainings');
+            console.log(this.user);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    @action getUser = async () => {
+        try {
+            const user = await agent.userAgent.current();
+            runInAction(() => {
+                this.user = user;
+            })
+        } catch (error) {
+            console.log(error);
         }
     }
 

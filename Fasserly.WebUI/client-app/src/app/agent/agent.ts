@@ -54,7 +54,6 @@ const userAgent = {
     current: (): Promise<IUser> => requests.get('/user'),
     login: (user: IUserFromValues): Promise<IUser> => requests.post(`/user/login`, user),
     register: (user: IUserFromValues): Promise<IUser> => requests.post(`/user/register`, user),
-
 }
 export default {
     trainingAgent,

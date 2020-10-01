@@ -1,6 +1,8 @@
 ﻿using Fasserly.Database.Entities;
 using Fasserly.Infrastructure.DataAccess;
+using Fasserly.Infrastructure.Mediator.UserMediator;
 using Fasserly.WebUI.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -24,26 +26,18 @@ namespace Fasserly.WebUI.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserFasserly>> Register(UserViewModel viewModel)
+        public async Task<ActionResult<UserFasserly>> Register(Register.Command command)
         {
-            return await dataService.Registre(ParserToUserFasserly(viewModel));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return await Mediator.Send(command);
         }
 
         [HttpGet]
         public async Task<ActionResult<UserFasserly>> CurrentUser()
         {
             return await dataService.GetCurrentUser();
-        }
-
-        private UserFasserly ParserToUserFasserly(UserViewModel vm)
-        {
-            return new UserFasserly
-            {
-                UserName = vm.UserName,
-                DisplayName = vm.DisplayName,
-                Email = vm.Email,
-                Image = null,
-            };
         }
     }
 }

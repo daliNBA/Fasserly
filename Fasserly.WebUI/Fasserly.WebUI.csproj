@@ -11,10 +11,12 @@
     <None Remove="client-app\src\NewFolder\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="client-app\src\app\common\form\ErrorMessage.tsx" />
     <None Remove="client-app\src\app\common\form\inputDate.tsx" />
     <None Remove="client-app\src\app\common\form\inputSelect.tsx" />
     <None Remove="client-app\src\app\common\form\inputText.tsx" />
     <None Remove="client-app\src\app\common\form\inputTextArea.tsx" />
+    <None Remove="client-app\src\app\common\modal\ModalContainer.tsx" />
     <None Remove="client-app\src\app\common\option.tsx" />
     <None Remove="client-app\src\app\common\options\BusinessOptions.tsx" />
     <None Remove="client-app\src\app\common\options\DesignOptions.tsx" />
@@ -24,6 +26,7 @@
     <None Remove="client-app\src\app\models\IUser.ts" />
     <None Remove="client-app\src\app\repositories\baseRepository.ts" />
     <None Remove="client-app\src\app\repositories\commonRepository.ts" />
+    <None Remove="client-app\src\app\repositories\modalRepository.ts" />
     <None Remove="client-app\src\app\repositories\trainingRepository.ts" />
     <None Remove="client-app\src\app\repositories\userRepository.ts" />
     <None Remove="client-app\src\features\Nav\Nav-drp-menu\IT_Menu.tsx" />
@@ -36,6 +39,7 @@
     <None Remove="client-app\src\features\Training\trainingItem\trainingDetailSideBar.tsx" />
     <None Remove="client-app\src\features\Training\trainingList.tsx" />
     <None Remove="client-app\src\features\User\LoginForm.tsx" />
+    <None Remove="client-app\src\features\User\RegisterForm.tsx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
@@ -47,10 +51,12 @@
     <ProjectReference Include="..\Fasserly.Infrastructure\Fasserly.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="client-app\src\app\common\form\ErrorMessage.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputDate.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputSelect.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputText.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputTextArea.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\modal\ModalContainer.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\options\BusinessOptions.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\options\DesignOptions.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\options\ITOptions.tsx" />
@@ -60,6 +66,7 @@
     <TypeScriptCompile Include="client-app\src\app\models\IUser.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\baseRepository.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\commonRepository.ts" />
+    <TypeScriptCompile Include="client-app\src\app\repositories\modalRepository.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\trainingRepository.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\userRepository.ts" />
     <TypeScriptCompile Include="client-app\src\features\Nav\Nav-drp-menu\IT_Menu.tsx" />
@@ -72,5 +79,6 @@
     <TypeScriptCompile Include="client-app\src\features\Training\trainingItem\trainingDetailSideBar.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\trainingList.tsx" />
     <TypeScriptCompile Include="client-app\src\features\User\LoginForm.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\User\RegisterForm.tsx" />
   </ItemGroup>
 </Project>

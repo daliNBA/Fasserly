@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import { Container } from 'semantic-ui-react'
 import NavBar from '../../features/Nav/navBar';
 import { observer } from 'mobx-react-lite'
@@ -9,10 +9,27 @@ import TrainingDetails from '../../features/Training/detail';
 import NotFound from './NoFound';
 import LoginFrom from '../../features/User/LoginForm'
 import { ToastContainer } from 'react-toastify';
+import { BaseRepositoryContext } from '../repositories/baseRepository';
+import Loading from './Loading';
+import ModalContainer from '../common/modal/ModalContainer';
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
+    const baseRepository = useContext(BaseRepositoryContext);
+    const { token, setAppLoaded, appLoaded } = baseRepository.commonRepository;
+    const { getUser } = baseRepository.userRepository;
+
+    useEffect(() => {
+        if (token) {
+            getUser().finally(() => setAppLoaded())
+        }
+        else {
+            setAppLoaded();
+        }
+    })
+    if (!appLoaded) return <Loading content ='Loading app ...'/>
     return (
         <div>
+            <ModalContainer/>
             <Fragment>
                 <ToastContainer position='bottom-right' />
                 <NavBar />

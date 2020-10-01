@@ -3,7 +3,7 @@ import { Label, Item } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import TrainingItem from './trainingItem';
 import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
-
+import { format } from 'date-fns'
 const TrainingsList = () => {
     const baseRepository = useContext(BaseRepositoryContext);
     const { trainingByDate } = baseRepository.trainingsRepository;
@@ -13,7 +13,7 @@ const TrainingsList = () => {
                 {trainingByDate.map(([group, trainings]) => (
                     <Fragment key={group} >
                         <Label size="large" color="blue">
-                            {group}
+                            {format(group, 'eeee do MMMM')}
                         </Label>
                         <Item.Group>
                             {trainings.map((training) => (

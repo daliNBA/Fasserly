@@ -10,35 +10,39 @@ import { combineValidators, isRequired } from 'revalidate';
 
 const validate = combineValidators({
     email: isRequired('email'),
+    username: isRequired('username'),
+    //diplayName: isRequired('diplayName'),
     password: isRequired('password'),
 })
 
-const LoginFrom = () => {
+const RegisterFrom = () => {
     const baseReposiitory = useContext(BaseRepositoryContext);
-    const { login } = baseReposiitory.userRepository;
+    const { register } = baseReposiitory.userRepository;
     return (
         <FinalForm
-            onSubmit={(values: IUserFromValues) => login(values).catch(error => ({
+            onSubmit={(values: IUserFromValues) => register(values).catch(error => ({
                 [FORM_ERROR]: error
             }))}
             validate={validate}
             render={({ handleSubmit, submitting, submitError, invalid, pristine, dirtySinceLastSubmit }) => (
                 <Form onSubmit={handleSubmit} error>
-                    <Header as='h2' content='Login to Fasserly' color='blue' textAlign='center' />
+                    <Header as='h2' content='Sign Up to Fasserly' color='blue' textAlign='center' />
+                    <Field name='username' component={TextInput} placeholder='username' />
+                    <Field name='diplayname' component={TextInput} placeholder='diplay Name' />
                     <Field name='email' component={TextInput} placeholder='Email' />
                     <Field name='password' component={TextInput} placeholder='Password' type='Password' />
-                    {submitError && !dirtySinceLastSubmit && <ErrorMessage error={submitError} text={submitError.status === 401 ? ' Unauthorized Invalid email or password' : 'unknown'}/>}
+                    {submitError && !dirtySinceLastSubmit && <ErrorMessage error={submitError} />}
                     <Button
-                        disabled={(invalid && !dirtySinceLastSubmit) || pristine  }
+                        disabled={(invalid && !dirtySinceLastSubmit) || pristine}
                         loading={submitting}
                         color='blue'
-                        content='Login'
+                        content='Register'
                         fluid
                     />
-                </Form>                
-                )}
+                </Form>
+            )}
         />
     );
 }
 
-export default LoginFrom;
+export default RegisterFrom;

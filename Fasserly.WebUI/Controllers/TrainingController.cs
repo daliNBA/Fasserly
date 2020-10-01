@@ -60,21 +60,5 @@ namespace Fasserly.WebUI.Controllers
 
             return training;
         }
-
-        private Training ParserToTraining(TrainingViewModel vm)
-        {
-            return new Training
-            {
-                TrainingId = vm.TrainingId,
-                Title = vm.Title,
-                Description = vm.Description,
-                IsActive = vm.IsActive,
-                Language = vm.Language,
-                Price = vm.Price,
-                Rating = vm.Rating,
-                UpdateDate = vm.UpdateDate,
-                DateOfCreation = vm.DateOfCreation,
-            };
-        }
     }
 }

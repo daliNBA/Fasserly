@@ -1,13 +1,17 @@
 ﻿import React, { useContext } from 'react';
-import { Menu, Input, Button, Dropdown, Icon, Header, Image } from 'semantic-ui-react';
+import { Menu, Input, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import { NavLink, Link } from 'react-router-dom';
 import { ITList } from '../../app/common/options/ITOptions'
 import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
+import LoginFrom from '../User/LoginForm';
+import RegisterForm from '../User/RegisterForm';
 
 const NavBar: React.FC = () => {
     const baseReposiitory = useContext(BaseRepositoryContext);
     const { isLoggedIn, user, logout } = baseReposiitory.userRepository;
+    const { openModal } = baseReposiitory.modalRepository;
+
     return (
         <div>
             <Menu pointing>
@@ -49,8 +53,8 @@ const NavBar: React.FC = () => {
                     ) : (
                         <Menu.Item>
                             <div>
-                                <Button as={Link} to='/login' basic color='blue'>Sign in</Button>
-                                <Button color='red'>Sign up</Button>
+                                <Button onClick={() => openModal(<LoginFrom />)} basic color='blue'>Sign in</Button>
+                                <Button onClick={() => openModal(<RegisterForm />)} color='red'>Sign up</Button>
                             </div>
                         </Menu.Item>)
                 }

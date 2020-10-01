@@ -1,5 +1,4 @@
 ﻿import { observable, action, computed, runInAction } from 'mobx'
-import { createContext } from 'react';
 import agent from '../agent/agent';
 import { ITraining } from '../models/ITraining';
 import { history } from '../../index';
