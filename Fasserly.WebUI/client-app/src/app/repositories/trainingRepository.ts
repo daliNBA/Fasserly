@@ -40,7 +40,6 @@ export default class TrainingRepository {
                     this.trainingRegestry.set(training.trainingId, training);
                 });
                 this.loading = false;
-                console.log(trainings);
             })
 
         } catch (error) {
@@ -55,16 +54,16 @@ export default class TrainingRepository {
         this.submitting = true;
         try {
             await agent.trainingAgent.create(training);
-            runInAction('Creating', () => {
+            runInAction('Creating training', () => {
                 this.trainingRegestry.set(training.trainingId, training);
                 this.training = training;
                 this.submitting = false;
             })
             history.push(`/detailTraining/${training.trainingId}`);
         } catch (error) {
-            runInAction('Creating Error', () => {
-                console.log(error);
+            runInAction('Creating training Error', () => {  
                 this.submitting = false;
+                console.log(error);
             })
             toast.error("Error submitting Data");
         }
@@ -111,15 +110,17 @@ export default class TrainingRepository {
         let training = this.getTraining(id);
         if (training) {
             this.training = training;
+            console.log(training);
             return training;
         } else {
             try {
                 this.loading = true;
                 training = await agent.trainingAgent.details(id);
-                runInAction('Editing', () => {
+                runInAction('Loading', () => {
                     //training.dateOfCreation = new Date(training.dateOfCreation);
                     this.training = training;
                     this.loading = false;
+                    console.log(training);
                     return training;
                 });
             } catch (e) {

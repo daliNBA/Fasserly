@@ -10,6 +10,6 @@ namespace Fasserly.Database.Entities
         public int Percent { get; set; }
         public DateTime DateOfPromotion { get; set; }
         public DateTime DateOfEnd { get; set; }
-        public List<Training> trainings { get; set; } = new List<Training>();
+        public virtual ICollection<Training> trainings { get; set; } = new HashSet<Training>();
     }
 }

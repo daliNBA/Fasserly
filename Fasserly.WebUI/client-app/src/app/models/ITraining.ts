@@ -3,10 +3,10 @@
     title: string;
     description: string;
     language: string;
-    rating?: number;
+    rating: number;
     dateOfCreation: Date;
     updateDate?: Date;
-    price: number;
+    price: string;
     isActive: boolean;
     category: string;
 }
@@ -18,7 +18,7 @@ export class TrainingFormValues implements ITraining {
     trainingId: string = '';
     title: string = '';
     language: string = '';
-    price: number = 0;
+    price: string = '0';
     rating: number = 0;
     dateOfCreation: Date = new Date(Date.now());
     updateDate: Date = new Date(Date.now());
@@ -27,7 +27,6 @@ export class TrainingFormValues implements ITraining {
     category: string = '';
 
     constructor(init?: TrainingFormValues) {
-
         Object.assign(this, init)
     }
 }

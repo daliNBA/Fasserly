@@ -8,8 +8,8 @@ namespace Fasserly.Database.Entities
     {
         public Guid CommentId { get; set; }
         public string Text { get; set; }
-        public UserFasserly UserFasserly { get; set; }
+        public virtual UserFasserly UserFasserly { get; set; }
         public DateTime DateOfComment { get; set; }
-        public Training Training { get; set; }
+        public virtual Training Training { get; set; }
     }
 }

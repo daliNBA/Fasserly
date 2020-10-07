@@ -1,4 +1,5 @@
-﻿using Fasserly.Database;
+﻿using AutoMapper;
+using Fasserly.Database;
 using Fasserly.Database.Entities;
 using Fasserly.Infrastructure.DataAccess;
 using MediatR;
@@ -12,15 +13,21 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
 {
     public class List
     {
-        public class Query : IRequest<List<Training>> { }
-        public class Handler : BaseDataAccess, IRequestHandler<Query, List<Training>>
+        public class Query : IRequest<List<TrainingDto>> { }
+        public class Handler : BaseDataAccess, IRequestHandler<Query, List<TrainingDto>>
         {
-            public Handler(DbContextOptions<DatabaseContext> options) : base(options)
+            private readonly IMapper _mapper;
+
+            public Handler(DbContextOptions<DatabaseContext> options, IMapper mapper) : base(options)
             {
+                _mapper = mapper;
             }
-            public async Task<List<Training>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<TrainingDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await context.Trainings.Where(x => x.IsActive).ToListAsync();
+                var trainings = await context.Trainings.Where(x => x.IsActive)
+                    .ToListAsync();
+
+                return _mapper.Map<List<Training>, List<TrainingDto>>(trainings);
             }
         }
     }

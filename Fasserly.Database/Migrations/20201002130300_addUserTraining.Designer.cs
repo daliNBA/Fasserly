@@ -4,14 +4,16 @@ using Fasserly.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fasserly.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20201002130300_addUserTraining")]
+    partial class addUserTraining
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,6 +103,9 @@ namespace Fasserly.Database.Migrations
                     b.Property<string>("Language")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(8,6)");
 
@@ -116,16 +121,13 @@ namespace Fasserly.Database.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserFasserlyId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("TrainingId");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("PromotionId");
+                    b.HasIndex("OwnerId");
 
-                    b.HasIndex("UserFasserlyId");
+                    b.HasIndex("PromotionId");
 
                     b.ToTable("Trainings");
                 });
@@ -209,7 +211,7 @@ namespace Fasserly.Database.Migrations
                     b.Property<DateTime>("DateJoined")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsOwner")
+                    b.Property<bool>("IsHost")
                         .HasColumnType("bit");
 
                     b.HasKey("UserFasserlyId", "TrainingId");
@@ -353,7 +355,7 @@ namespace Fasserly.Database.Migrations
             modelBuilder.Entity("Fasserly.Database.Entities.Comment", b =>
                 {
                     b.HasOne("Fasserly.Database.Entities.Training", "Training")
-                        .WithMany()
+                        .WithMany("comments")
                         .HasForeignKey("TrainingId");
 
                     b.HasOne("Fasserly.Database.Entities.UserFasserly", "UserFasserly")
@@ -367,13 +369,14 @@ namespace Fasserly.Database.Migrations
                         .WithMany("Trainings")
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("Fasserly.Database.Entities.UserFasserly", "Owner")
+                        .WithMany("Trainings")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Fasserly.Database.Entities.Promotion", null)
                         .WithMany("trainings")
                         .HasForeignKey("PromotionId");
-
-                    b.HasOne("Fasserly.Database.Entities.UserFasserly", null)
-                        .WithMany("Trainings")
-                        .HasForeignKey("UserFasserlyId");
                 });
 
             modelBuilder.Entity("Fasserly.Database.Entities.UserTraining", b =>

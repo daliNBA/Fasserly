@@ -19,20 +19,16 @@ namespace Fasserly.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Training>>> Get()
+        public async Task<ActionResult<IEnumerable<TrainingDto>>> Get()
         {
             return await Mediator.Send(new List.Query());
         }
 
-        // GET api/Training/2
+        // GET api/Training/2C:\Users\Asus\source\repos\Fasserly\Fasserly.WebUI\Controllers\TrainingController.cs
         [HttpGet("{id}")]
-        public async Task<ActionResult<Training>> Get(Guid id)
+        public async Task<ActionResult<TrainingDto>> Get(Guid id)
         {
-            var training = await Mediator.Send(new Detail.Query(id));
-            if (training == null)
-                return NotFound();
-
-            return training;
+            return await Mediator.Send(new Detail.Query(id));
         }
 
         // POST api/Training
@@ -45,15 +41,35 @@ namespace Fasserly.WebUI.Controllers
             return await Mediator.Send(command);
         }
 
+        //Buy command
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Unit>> Buy(Guid id)
+        {           
+            return await Mediator.Send(new Buy.Command { Id = id });
+        }
+
+        //Buy command
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Unit>> Refund(Guid id)
+        {
+            return await Mediator.Send(new Refund.Command { Id = id });
+        }
+
+        // PUT api/Training/5
+        [HttpPut("{id}")]
+        [Authorize(Policy = "IsTrainingOwner")]
+        public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command command)
+        {
+            command.TrainingId = id;
+            return await Mediator.Send(command);
+        }
+
         // DELETE api/Training/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "IsTrainingOwner")]
         public async Task<ActionResult<Unit>> Delete(Guid id)
         {
-            var training = await Mediator.Send(new Delete.Command { Id = new Guid() });
-            if (training == null)
-                return NotFound();
-
-            return training;
+            return await Mediator.Send(new Delete.Command { Id = id });
         }
     }
 }

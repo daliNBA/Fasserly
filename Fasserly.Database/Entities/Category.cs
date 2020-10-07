@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Fasserly.Database.Entities
 {
@@ -8,6 +7,6 @@ namespace Fasserly.Database.Entities
     {
         public Guid CategoryId { get; set; }
         public string Label { get; set; }
-        public List<Training> Trainings { get; set; } = new List<Training>();
+        public virtual ICollection<Training> Trainings { get; set; } = new HashSet<Training>();
     }
 }

@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Fasserly.Database.Entities;
+using Fasserly.Infrastructure.Mediator.CategoryMediator;
+using Fasserly.Infrastructure.Mediator.UserMediator;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
-namespace Fasserly.Database.Entities
+namespace Fasserly.Infrastructure.Mediator.TrainingMediator
 {
-    public class Training
+    public class TrainingDto
     {
         public Guid TrainingId { get; set; }
         public string Title { get; set; }
@@ -12,13 +15,12 @@ namespace Fasserly.Database.Entities
         public int? Rating { get; set; }
         public DateTime DateOfCreation { get; set; }
         public DateTime? UpdateDate { get; set; }
-
-        [Column(TypeName = "decimal(8,6)")]
         public decimal? Price { get; set; }
         public string Language { get; set; }
         public bool IsActive { get; set; }
-        public virtual ICollection<UserTraining> UserTrainings { get; set; } = new HashSet<UserTraining>();
-        public virtual Category category { get; set; }
-        //public virtual ICollection<Comment> comments { get; set; } = new HashSet<Comment>();
+        public CategoryDto Category { get; set; }
+
+        [JsonPropertyName("buyers")]
+        public ICollection<BuyerDto> UserTrainings { get; set; }
     }
 }

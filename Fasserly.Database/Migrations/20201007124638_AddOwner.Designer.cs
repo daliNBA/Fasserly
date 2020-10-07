@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fasserly.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200916122432_aleterIdentity")]
-    partial class aleterIdentity
+    [Migration("20201007124638_AddOwner")]
+    partial class AddOwner
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -118,11 +118,16 @@ namespace Fasserly.Database.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserFasserlyId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("TrainingId");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("PromotionId");
+
+                    b.HasIndex("UserFasserlyId");
 
                     b.ToTable("Trainings");
                 });
@@ -193,6 +198,27 @@ namespace Fasserly.Database.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Fasserly.Database.Entities.UserTraining", b =>
+                {
+                    b.Property<string>("UserFasserlyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("TrainingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateJoined")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsOwner")
+                        .HasColumnType("bit");
+
+                    b.HasKey("UserFasserlyId", "TrainingId");
+
+                    b.HasIndex("TrainingId");
+
+                    b.ToTable("UserTrainings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -329,7 +355,7 @@ namespace Fasserly.Database.Migrations
             modelBuilder.Entity("Fasserly.Database.Entities.Comment", b =>
                 {
                     b.HasOne("Fasserly.Database.Entities.Training", "Training")
-                        .WithMany("comments")
+                        .WithMany()
                         .HasForeignKey("TrainingId");
 
                     b.HasOne("Fasserly.Database.Entities.UserFasserly", "UserFasserly")
@@ -346,6 +372,25 @@ namespace Fasserly.Database.Migrations
                     b.HasOne("Fasserly.Database.Entities.Promotion", null)
                         .WithMany("trainings")
                         .HasForeignKey("PromotionId");
+
+                    b.HasOne("Fasserly.Database.Entities.UserFasserly", null)
+                        .WithMany("Trainings")
+                        .HasForeignKey("UserFasserlyId");
+                });
+
+            modelBuilder.Entity("Fasserly.Database.Entities.UserTraining", b =>
+                {
+                    b.HasOne("Fasserly.Database.Entities.Training", "Training")
+                        .WithMany("UserTrainings")
+                        .HasForeignKey("TrainingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fasserly.Database.Entities.UserFasserly", "UserFasserly")
+                        .WithMany("UserTrainings")
+                        .HasForeignKey("UserFasserlyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

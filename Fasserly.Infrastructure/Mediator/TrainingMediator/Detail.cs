@@ -1,4 +1,5 @@
-﻿using Fasserly.Database;
+﻿using AutoMapper;
+using Fasserly.Database;
 using Fasserly.Database.Entities;
 using Fasserly.Infrastructure.DataAccess;
 using Fasserly.Infrastructure.Error;
@@ -13,7 +14,7 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
 {
     public class Detail
     {
-        public class Query : IRequest<Training>
+        public class Query : IRequest<TrainingDto>
         {
             public Query(Guid id)
             {
@@ -22,18 +23,24 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
             public Guid Id { get; set; }
         }
 
-        public class Handler : BaseDataAccess, IRequestHandler<Query, Training>
+        public class Handler : BaseDataAccess, IRequestHandler<Query, TrainingDto>
         {
-            public Handler(DbContextOptions<DatabaseContext> options) : base(options)
+            private readonly IMapper _mapper;
+
+            public Handler(DbContextOptions<DatabaseContext> options, IMapper mapper) : base(options)
             {
+                _mapper = mapper;
             }
-            public async Task<Training> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<TrainingDto> Handle(Query request, CancellationToken cancellationToken)
             {
-                var training = await context.Trainings.FindAsync(request.Id);
+                var training = await context.Trainings
+                    .FindAsync(request.Id);
+
                 if (training == null)
                     throw new RestException(HttpStatusCode.NotFound, new { training = "Not found" });
 
-                return training;
+                var returnedTraining = _mapper.Map<Training, TrainingDto>(training);
+                return returnedTraining;
             }
         }
     }

@@ -13,6 +13,7 @@
   <ItemGroup>
     <None Remove="client-app\src\app\common\form\ErrorMessage.tsx" />
     <None Remove="client-app\src\app\common\form\inputDate.tsx" />
+    <None Remove="client-app\src\app\common\form\inputNumber.tsx" />
     <None Remove="client-app\src\app\common\form\inputSelect.tsx" />
     <None Remove="client-app\src\app\common\form\inputText.tsx" />
     <None Remove="client-app\src\app\common\form\inputTextArea.tsx" />
@@ -23,6 +24,7 @@
     <None Remove="client-app\src\app\common\util\util.ts" />
     <None Remove="client-app\src\app\layout\Loading.tsx" />
     <None Remove="client-app\src\app\layout\NoFound.tsx" />
+    <None Remove="client-app\src\app\layout\ScrollToTop.tsx" />
     <None Remove="client-app\src\app\models\IUser.ts" />
     <None Remove="client-app\src\app\repositories\baseRepository.ts" />
     <None Remove="client-app\src\app\repositories\commonRepository.ts" />
@@ -54,6 +56,9 @@
     <TypeScriptCompile Include="client-app\src\app\common\form\ErrorMessage.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputDate.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputSelect.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\form\inputNumber.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="client-app\src\app\common\form\inputText.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputTextArea.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\modal\ModalContainer.tsx" />
@@ -63,6 +68,7 @@
     <TypeScriptCompile Include="client-app\src\app\common\util\util.ts" />
     <TypeScriptCompile Include="client-app\src\app\layout\Loading.tsx" />
     <TypeScriptCompile Include="client-app\src\app\layout\NoFound.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\layout\ScrollToTop.tsx" />
     <TypeScriptCompile Include="client-app\src\app\models\IUser.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\baseRepository.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\commonRepository.ts" />

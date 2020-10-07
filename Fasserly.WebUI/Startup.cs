@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MediatR;
 using Fasserly.Infrastructure.Mediator.TrainingMediator;
+using AutoMapper;
 
 namespace Fasserly.WebUI
 {
@@ -44,7 +45,12 @@ namespace Fasserly.WebUI
             });
 
             var connectionString = Configuration.GetConnectionString("FasserlyDatabase");
-            services.AddDbContext<DatabaseContext>(option => option.UseSqlServer(connectionString, x => x.CommandTimeout(180)));
+            services.AddDbContext<DatabaseContext>(option => {
+
+                option.UseLazyLoadingProxies();
+                option.UseSqlServer(connectionString, x => x.CommandTimeout(180));
+                });
+            services.AddAutoMapper(typeof(List.Handler));
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddMvc();
 
@@ -70,6 +76,18 @@ namespace Fasserly.WebUI
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<DatabaseContext>();
             identityBuilder.AddSignInManager<SignInManager<UserFasserly>>();
+
+            //Add Authorization training Owner Requiremnt
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsTrainingOwner", policy =>
+                {
+                    policy.Requirements.Add(new IsOwnerRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsOwnerRequirementHandler>();
+
+            //Authorize connection with Token bearer (
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {

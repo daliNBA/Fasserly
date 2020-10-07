@@ -1,13 +1,10 @@
-﻿using Fasserly.Database;
-using Fasserly.Database.Entities;
+﻿using Fasserly.Database.Entities;
 using Fasserly.Database.Interface;
-using Fasserly.Infrastructure.DataAccess;
 using Fasserly.Infrastructure.Error;
 using Fasserly.Infrastructure.Mediator.UserMediator;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,7 +48,7 @@ public class Login
             if (user == null)
                 throw new RestException(HttpStatusCode.Unauthorized, new { training = "Not Authorized" });
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return new User
                 {
