@@ -21,18 +21,27 @@
     <None Remove="client-app\src\app\common\option.tsx" />
     <None Remove="client-app\src\app\common\options\BusinessOptions.tsx" />
     <None Remove="client-app\src\app\common\options\DesignOptions.tsx" />
+    <None Remove="client-app\src\app\common\photoUpload\PhotoUploadWidget.tsx" />
+    <None Remove="client-app\src\app\common\photoUpload\PhotoWidgetCropper.tsx" />
+    <None Remove="client-app\src\app\common\photoUpload\PhotoWidgetDropzone.tsx" />
     <None Remove="client-app\src\app\common\util\util.ts" />
     <None Remove="client-app\src\app\layout\Loading.tsx" />
     <None Remove="client-app\src\app\layout\NoFound.tsx" />
     <None Remove="client-app\src\app\layout\ScrollToTop.tsx" />
+    <None Remove="client-app\src\app\models\IPorfile.ts" />
     <None Remove="client-app\src\app\models\IUser.ts" />
     <None Remove="client-app\src\app\repositories\baseRepository.ts" />
     <None Remove="client-app\src\app\repositories\commonRepository.ts" />
     <None Remove="client-app\src\app\repositories\modalRepository.ts" />
+    <None Remove="client-app\src\app\repositories\profileRepository.ts" />
     <None Remove="client-app\src\app\repositories\trainingRepository.ts" />
     <None Remove="client-app\src\app\repositories\userRepository.ts" />
     <None Remove="client-app\src\features\Nav\Nav-drp-menu\IT_Menu.tsx" />
     <None Remove="client-app\src\features\Nav\navBar.tsx" />
+    <None Remove="client-app\src\features\Profile\ProfileContent.tsx" />
+    <None Remove="client-app\src\features\Profile\ProfileHeader.tsx" />
+    <None Remove="client-app\src\features\Profile\ProfilePage.tsx" />
+    <None Remove="client-app\src\features\Profile\ProfilePhotos.tsx" />
     <None Remove="client-app\src\features\Training\detail.tsx" />
     <None Remove="client-app\src\features\Training\form.tsx" />
     <None Remove="client-app\src\features\Training\trainingItem.tsx" />
@@ -40,8 +49,10 @@
     <None Remove="client-app\src\features\Training\trainingItem\trainingDetailInfo.tsx" />
     <None Remove="client-app\src\features\Training\trainingItem\trainingDetailSideBar.tsx" />
     <None Remove="client-app\src\features\Training\trainingList.tsx" />
+    <None Remove="client-app\src\features\Training\TrainingListItemBuyers.tsx" />
     <None Remove="client-app\src\features\User\LoginForm.tsx" />
     <None Remove="client-app\src\features\User\RegisterForm.tsx" />
+    <None Remove="client-app\typings-custom\react-cropper.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
@@ -65,18 +76,27 @@
     <TypeScriptCompile Include="client-app\src\app\common\options\BusinessOptions.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\options\DesignOptions.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\options\ITOptions.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\photoUpload\PhotoUploadWidget.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\photoUpload\PhotoWidgetCropper.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\common\photoUpload\PhotoWidgetDropzone.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\util\util.ts" />
     <TypeScriptCompile Include="client-app\src\app\layout\Loading.tsx" />
     <TypeScriptCompile Include="client-app\src\app\layout\NoFound.tsx" />
     <TypeScriptCompile Include="client-app\src\app\layout\ScrollToTop.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\models\IPorfile.ts" />
     <TypeScriptCompile Include="client-app\src\app\models\IUser.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\baseRepository.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\commonRepository.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\modalRepository.ts" />
+    <TypeScriptCompile Include="client-app\src\app\repositories\profileRepository.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\trainingRepository.ts" />
     <TypeScriptCompile Include="client-app\src\app\repositories\userRepository.ts" />
     <TypeScriptCompile Include="client-app\src\features\Nav\Nav-drp-menu\IT_Menu.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Nav\navBar.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Profile\ProfileContent.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Profile\ProfileHeader.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Profile\ProfilePage.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Profile\ProfilePhotos.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\detail.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\form.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\trainingItem.tsx" />
@@ -84,7 +104,9 @@
     <TypeScriptCompile Include="client-app\src\features\Training\trainingItem\trainingDetailInfo.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\trainingItem\trainingDetailSideBar.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\trainingList.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\TrainingListItemBuyers.tsx" />
     <TypeScriptCompile Include="client-app\src\features\User\LoginForm.tsx" />
     <TypeScriptCompile Include="client-app\src\features\User\RegisterForm.tsx" />
+    <TypeScriptCompile Include="client-app\typings-custom\react-cropper.d.ts" />
   </ItemGroup>
 </Project>

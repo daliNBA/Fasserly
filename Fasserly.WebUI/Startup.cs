@@ -1,11 +1,13 @@
+using AutoMapper;
 using Fasserly.Database;
 using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
-using Fasserly.Infrastructure.DataAccess;
+using Fasserly.Infrastructure.Interface;
+using Fasserly.Infrastructure.Mediator.TrainingMediator;
+using Fasserly.Infrastructure.Photos;
 using Fasserly.Infrastructure.Security;
 using Fasserly.WebUI.MiddleWare;
-using Fasserly.WebUI.ViewModels;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -18,9 +20,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using MediatR;
-using Fasserly.Infrastructure.Mediator.TrainingMediator;
-using AutoMapper;
 
 namespace Fasserly.WebUI
 {
@@ -36,6 +35,15 @@ namespace Fasserly.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var connectionString = Configuration.GetConnectionString("FasserlyDatabase");
+            services.AddDbContext<DatabaseContext>(option =>
+            {
+
+                option.UseLazyLoadingProxies();
+                option.UseSqlServer(connectionString, x => x.CommandTimeout(180));
+            });
+
             services.AddCors(option =>
             {
                 option.AddPolicy("CorsPolicy", policy =>
@@ -44,33 +52,18 @@ namespace Fasserly.WebUI
                 });
             });
 
-            var connectionString = Configuration.GetConnectionString("FasserlyDatabase");
-            services.AddDbContext<DatabaseContext>(option => {
 
-                option.UseLazyLoadingProxies();
-                option.UseSqlServer(connectionString, x => x.CommandTimeout(180));
-                });
-            services.AddAutoMapper(typeof(List.Handler));
             services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddAutoMapper(typeof(List.Handler));
             services.AddMvc();
-
-            services.AddScoped(typeof(TrainingDataServices));
-            services.AddScoped(typeof(Login));
-            services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IUserAccessor, UserAccessor>();
-            services.AddControllersWithViews();
             services.AddControllers(opt =>
-           {
-               //Ajouter l'athentification security
-               var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-               opt.Filters.Add(new AuthorizeFilter(policy));
+            {
+                //Ajouter l'athentification security
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
 
-           })
-                .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Create>(); });
-            services.AddControllersWithViews();
-
-            //Add identity Core
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
+            })
+             .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Create>(); });
 
             var builder = services.AddIdentityCore<UserFasserly>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
@@ -78,14 +71,17 @@ namespace Fasserly.WebUI
             identityBuilder.AddSignInManager<SignInManager<UserFasserly>>();
 
             //Add Authorization training Owner Requiremnt
-            services.AddAuthorization(opt =>
-            {
-                opt.AddPolicy("IsTrainingOwner", policy =>
-                {
-                    policy.Requirements.Add(new IsOwnerRequirement());
-                });
-            });
-            services.AddTransient<IAuthorizationHandler, IsOwnerRequirementHandler>();
+            //services.AddAuthorization(opt =>
+            //{
+            //    opt.AddPolicy("IsTrainingOwner", policy =>
+            //    {
+            //        policy.Requirements.Add(new IsOwnerRequirement());
+            //    });
+            //});
+            //services.AddTransient<IAuthorizationHandler, IsOwnerRequirementHandler>();
+
+            //Add identity Core
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
 
             //Authorize connection with Token bearer (
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -100,6 +96,13 @@ namespace Fasserly.WebUI
                     };
                 });
 
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+
+
+            //services.AddControllersWithViews();
 
             //services.AddSpaStaticFiles(configuration =>
             //{
@@ -115,26 +118,19 @@ namespace Fasserly.WebUI
 
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
             }
-            //else
-            //{
-            //    app.UseExceptionHandler("/Error");
-            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            //    app.UseHsts();
-            //}
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                // app.UseHsts();
+            }
 
-            //Order is important
-            app.UseRouting();
+            // app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseCors("CorsPolicy");
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            //app.UseSpaStaticFiles();
-
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -142,16 +138,6 @@ namespace Fasserly.WebUI
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapControllers();
             });
-
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = "clientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-            //        spa.UseReactDevelopmentServer(npmScript: "start");
-            //    }
-            //});
         }
     }
 }

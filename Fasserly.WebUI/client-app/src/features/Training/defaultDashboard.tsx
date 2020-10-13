@@ -18,9 +18,12 @@ const TrainingDashboard: React.FC = () => {
 
     return (
         <Grid>
-            <GridColumn width={12}>
+            <GridColumn width={10}>
                 <TrainingsList />
             </GridColumn>
+            <Grid.Column width={6}>
+                <h2>Activity filters</h2>
+            </Grid.Column>
         </Grid>
     );
 }

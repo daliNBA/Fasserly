@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Fasserly.Infrastructure.Mediator.TrainingMediator
 {
-    public class Detail
+    public class Details
     {
         public class Query : IRequest<TrainingDto>
         {

@@ -9,12 +9,15 @@
     price: string;
     isActive: boolean;
     category: string;
+    isBuyer: boolean;
+    isOwner: boolean;
+    buyers: IBuyer[]
 }
 export interface ITrainingFormValue extends Partial<ITraining> {
     time?: Date
 }
 
-export class TrainingFormValues implements ITraining {
+export class TrainingFormValues implements ITrainingFormValue {
     trainingId: string = '';
     title: string = '';
     language: string = '';
@@ -29,4 +32,11 @@ export class TrainingFormValues implements ITraining {
     constructor(init?: TrainingFormValues) {
         Object.assign(this, init)
     }
+}
+
+export interface IBuyer {
+    username: string;
+    displayName: string;
+    image: string;
+    isOwner: boolean;
 }

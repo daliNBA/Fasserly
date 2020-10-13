@@ -2,7 +2,6 @@
 import { SegmentGroup, Grid, Icon, Segment } from 'semantic-ui-react';
 import { ITraining } from '../../../app/models/ITraining';
 import { format } from 'date-fns';
-
 const TrainingDetailInfo: React.FC<{ training: ITraining }> = ({ training }) => {
     return (
         <SegmentGroup>

@@ -1,5 +1,5 @@
 ﻿import React, { useState, useContext, useEffect } from 'react';
-import { TrainingFormValues, ITrainingFormValue, ITraining } from '../../app/models/ITraining';
+import { TrainingFormValues } from '../../app/models/ITraining';
 import { Form, Button, Segment, Grid, GridColumn } from 'semantic-ui-react';
 import { v4 as uuid } from 'uuid';
 import { observer } from 'mobx-react-lite';
@@ -10,7 +10,6 @@ import InputTextArea from '../../app/common/form/inputTextArea';
 import { ITList } from '../../app/common/options/ITOptions';
 import InputSelect from '../../app/common/form/inputSelect';
 import InputDate from '../../app/common/form/inputDate';
-import InputNumber from '../../app/common/form/inputNumber';
 import { combineTimeAndDate } from '../../app/common/util/util';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate'
 import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
@@ -76,7 +75,7 @@ const TrainingEdit: React.FC<RouteComponentProps<IDetailParams>> = ({ match, his
                         validate={validate} //validator
                         initialValues={training}
                         onSubmit={handleFinalFormSubmit}
-                        render={({ handleSubmit, pristine, invalid }) =>
+                        render={({ handleSubmit, pristine }) =>
                             (
                                 <Form onSubmit={handleSubmit} loading={loading}>
                                     <Field component={TextInput} placeholder='Title' name='title' value={training.title} />

@@ -1,6 +1,9 @@
 ﻿using Fasserly.Database.Entities;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Fasserly.Database.Interface
+namespace Fasserly.Infrastructure.Interface
 {
     public interface IJwtGenerator
     {

@@ -1,7 +1,8 @@
 ﻿using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
+using Fasserly.Infrastructure.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
                     Username = user.UserName,
                     Token = _jwtGenerator.CreateToken(user),
                     DisplayName = user.DisplayName,
-                    Image = null,
+                    Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 };
             }
         }

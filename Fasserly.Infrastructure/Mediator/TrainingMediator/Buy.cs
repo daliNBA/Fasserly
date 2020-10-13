@@ -1,8 +1,8 @@
 ﻿using Fasserly.Database;
 using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
 using Fasserly.Infrastructure.DataAccess;
 using Fasserly.Infrastructure.Error;
+using Fasserly.Infrastructure.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,16 +36,19 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
                 var user = await context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
 
                 var buy = await context.UserTrainings.SingleOrDefaultAsync(x => x.TrainingId == training.TrainingId && x.UserFasserlyId == user.Id);
+
                 if (buy != null)
-                    throw new RestException(HttpStatusCode.NotFound, new { training = "Already bought this course! " });
-                if(buy.IsOwner)
-                    throw new RestException(HttpStatusCode.NotFound, new { training = "You cannot buy your own courses! " });
+                    if (buy.IsOwner)
+                        throw new RestException(HttpStatusCode.NotFound, new { training = "You cannot buy your own courses! " });
+                    else
+                        throw new RestException(HttpStatusCode.NotFound, new { training = "Already bought this course! " });
 
                 buy = new UserTraining
                 {
                     UserFasserly = user,
                     Training = training,
                     DateJoined = DateTime.Now,
+                    IsOwner = false,
                 };
 
                 context.Add(buy);

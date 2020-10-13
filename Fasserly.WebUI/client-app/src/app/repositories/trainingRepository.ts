@@ -4,6 +4,8 @@ import { ITraining } from '../models/ITraining';
 import { history } from '../../index';
 import { toast } from 'react-toastify';
 import { BaseRepository } from './baseRepository'
+import { setTrainingProps, soldTraining } from '../common/util/util';
+import { SyntheticEvent } from 'react';
 
 export default class TrainingRepository {
 
@@ -16,6 +18,8 @@ export default class TrainingRepository {
     @observable loading = false;
     @observable submitting = false;
     @observable trainingRegestry = new Map();
+    @observable target = '';
+    @observable loadingBuy = false;
 
     @computed get trainingByDate() {
         return this.sortByDate(Array.from(this.trainingRegestry.values()));
@@ -30,14 +34,15 @@ export default class TrainingRepository {
         }, {} as { [key: string]: ITraining[] }));
     }
 
-     @action trainingList = async () => {
+    @action trainingList = async () => {
         this.loading = true;
         try {
             const trainings = await agent.trainingAgent.list()
             runInAction('Loading', () => {
                 trainings.forEach((training) => {
-                    training.dateOfCreation = new Date(training.dateOfCreation);
+                    setTrainingProps(training, this._baseRepository.userRepository.user!);
                     this.trainingRegestry.set(training.trainingId, training);
+                    console.log(training.buyers);
                 });
                 this.loading = false;
             })
@@ -54,6 +59,12 @@ export default class TrainingRepository {
         this.submitting = true;
         try {
             await agent.trainingAgent.create(training);
+            const buyer = soldTraining(this._baseRepository.userRepository.user!);
+            buyer.isOwner = true;
+            let buyers = [];
+            buyers.push(buyer);
+            training.buyers = buyers;
+            training.isOwner = true;
             runInAction('Creating training', () => {
                 this.trainingRegestry.set(training.trainingId, training);
                 this.training = training;
@@ -61,7 +72,7 @@ export default class TrainingRepository {
             })
             history.push(`/detailTraining/${training.trainingId}`);
         } catch (error) {
-            runInAction('Creating training Error', () => {  
+            runInAction('Creating training Error', () => {
                 this.submitting = false;
                 console.log(error);
             })
@@ -89,19 +100,22 @@ export default class TrainingRepository {
         }
     }
 
-    @action deleteTraining = async (id: string | undefined) => {
+    @action deleteTraining = async (event: SyntheticEvent<HTMLButtonElement>, id: string) => {
         this.submitting = true;
+        this.target = event.currentTarget.name;
         try {
             await agent.trainingAgent.delete(id)
             runInAction(() => {
                 this.trainingRegestry.delete(id);
                 this.training = null;
                 this.submitting = false;
+                this.target = '';
             })
         } catch (e) {
             runInAction(() => {
                 console.log(e);
                 this.submitting = false;
+                this.target = '';
             })
         }
     }
@@ -110,14 +124,13 @@ export default class TrainingRepository {
         let training = this.getTraining(id);
         if (training) {
             this.training = training;
-            console.log(training);
             return training;
         } else {
             try {
                 this.loading = true;
                 training = await agent.trainingAgent.details(id);
                 runInAction('Loading', () => {
-                    //training.dateOfCreation = new Date(training.dateOfCreation);
+                    setTrainingProps(training, this._baseRepository.userRepository.user!);
                     this.training = training;
                     this.loading = false;
                     console.log(training);
@@ -130,6 +143,49 @@ export default class TrainingRepository {
                 });
             }
         }
+    }
+
+    @action buyTraining = async () => {
+        const buyer = soldTraining(this._baseRepository.userRepository.user!);
+        this.loadingBuy = true;
+        try {
+
+            await agent.trainingAgent.buy(this.training!.trainingId);
+            runInAction(() => {
+                if (this.training) {
+                    this.training.buyers.push(buyer);
+                    this.training.isBuyer = true;
+                    this.trainingRegestry.set(this.training.trainingId, this.training);
+                    this.loadingBuy = false;
+                }              
+            })
+
+        } catch (error) {
+            runInAction(() => {
+                this.loadingBuy = false;
+            })
+            toast.error('Problem buying course')
+        }
+    }
+
+    @action refundTraining = async () => {  
+        this.loadingBuy = true;
+        try {
+            await agent.trainingAgent.refund(this.training!.trainingId);
+            runInAction(() => {
+                if (this.training) {
+                    this.training.buyers = this.training.buyers.filter(b => b.username !== this._baseRepository.userRepository.user!.username);
+                    this.training.isBuyer = false;
+                    this.trainingRegestry.set(this.training.trainingId, this.training);
+                    this.loadingBuy = false;
+                }   
+            })
+        } catch (error) {
+            runInAction(() => {
+                this.loadingBuy = false;
+            })
+            toast.error('Problem buying course')
+        }     
     }
 
     @action getTraining = (id: string) => {

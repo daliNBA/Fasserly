@@ -3,8 +3,10 @@ import { Label, Item } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import TrainingItem from './trainingItem';
 import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
-import { format } from 'date-fns'
+import { format } from 'date-fns';
+
 const TrainingsList = () => {
+
     const baseRepository = useContext(BaseRepositoryContext);
     const { trainingByDate } = baseRepository.trainingsRepository;
     return (

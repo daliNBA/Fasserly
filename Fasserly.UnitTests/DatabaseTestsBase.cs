@@ -1,6 +1,6 @@
 using Fasserly.Database;
 using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
+using Fasserly.Infrastructure.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

@@ -35,7 +35,6 @@ namespace Fasserly.Infrastructure.Security
                 var owner = training.UserTrainings.FirstOrDefault(x => x.IsOwner);
                 if (owner.UserFasserly.UserName == currentUserName)
                     context.Succeed(requirement);
-
             }
             else
                 context.Fail();

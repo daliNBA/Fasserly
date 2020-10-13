@@ -1,10 +1,11 @@
 ﻿using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
 using Fasserly.Infrastructure.Error;
+using Fasserly.Infrastructure.Interface;
 using Fasserly.Infrastructure.Mediator.UserMediator;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ public class Login
                     Username = user.UserName,
                     Token = _jwtGenerator.CreateToken(user),
                     DisplayName = user.DisplayName,
-                    Image = null,
+                    Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 };
             }
             throw new RestException(HttpStatusCode.Unauthorized);

@@ -1,9 +1,7 @@
 ﻿using Fasserly.Database;
-using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
 using Fasserly.Infrastructure.DataAccess;
 using Fasserly.Infrastructure.Error;
-using FluentValidation;
+using Fasserly.Infrastructure.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

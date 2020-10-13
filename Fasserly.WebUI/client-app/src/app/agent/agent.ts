@@ -1,4 +1,5 @@
 ﻿import { ITraining } from '../models/ITraining';
+import { IProfile, IPhoto } from '../models/IPorfile';
 import { IUser, IUserFromValues } from '../models/IUser';
 import axios, { AxiosResponse } from 'axios'
 import { toast } from 'react-toastify';
@@ -38,7 +39,14 @@ const requests = {
     post: (url: string, body: {}) => axios.post(url, body).then(sleep(1000)).then(responseBody),
     put: (url: string, body: {}) => axios.put(url, body).then(sleep(1000)).then(responseBody),
     delete: (url: string) => axios.delete(url).then(sleep(1000)).then(responseBody),
-}
+    postForm: (url: string, file: Blob) => {
+        let formData = new FormData();
+        formData.append('File', file);
+        return axios.post(url, formData, {
+            headers: { 'content-type': 'multipart/form-data' }
+        }).then(responseBody)
+    }
+};
 //(Communication bteween controller and Client-app)
 //training Agent 
 const trainingAgent = {
@@ -47,8 +55,17 @@ const trainingAgent = {
     create: (training: ITraining) => requests.post('/training', training),
     update: (training: ITraining) => requests.put(`/training/${training.trainingId}`, training),
     delete: (id: string | undefined) => requests.delete(`/training/${id}`),
+    buy: (id: string | undefined) => requests.post(`/training/${id}/buy`, {}),
+    refund: (id: string | undefined) => requests.delete(`/training/${id}/buy`),
 }
 
+//Profile agent
+const profileAgent = {
+    get: (username: string): Promise<IProfile> => requests.get(`/profile/${username}`),
+    uploadPhoto: (photo: Blob): Promise<IPhoto> => requests.postForm(`/photo`, photo),
+    setMainPhoto: (id: string) => requests.post(`/photo/${id}/setmain`, {}),
+    deletePhoto: (id: string) => requests.delete(`/photo/${id}`)
+}
 //User Agent
 const userAgent = {
     current: (): Promise<IUser> => requests.get('/user'),
@@ -57,5 +74,6 @@ const userAgent = {
 }
 export default {
     trainingAgent,
-    userAgent
+    userAgent,
+    profileAgent
 }

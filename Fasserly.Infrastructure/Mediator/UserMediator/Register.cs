@@ -1,13 +1,14 @@
 ﻿using Fasserly.Database;
 using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
 using Fasserly.Infrastructure.DataAccess;
 using Fasserly.Infrastructure.Error;
+using Fasserly.Infrastructure.Interface;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
             public string Email { get; set; }
             public string Password { get; set; }
             public string Username { get; set; }
-            public string Displayname { get; set; }
+            public string DisplayName { get; set; }
         }
 
         public class UserValidation : AbstractValidator<Command>
@@ -31,7 +32,7 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
                 RuleFor(x => x.Email).EmailAddress();
                 RuleFor(x => x.Password).Password();
                 RuleFor(x => x.Username).NotEmpty();
-                //RuleFor(x => x.Displayname).NotEmpty();
+                RuleFor(x => x.DisplayName).NotEmpty();
             }
         }
 
@@ -57,7 +58,7 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
                 {
                     UserName = request.Username,
                     Email = request.Email,
-                    DisplayName = request.Displayname,
+                    DisplayName = request.DisplayName,
                 };
 
                 var result = await _userManager.CreateAsync(user, request.Password);
@@ -66,9 +67,9 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
                 {
                     return new User
                     {
-                        DisplayName=user.DisplayName,
+                        DisplayName = user.DisplayName,
                         Token = _jwtGenerator.CreateToken(user),
-                        Image = null,
+                        Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                         Username = user.UserName,
                     };
                 }

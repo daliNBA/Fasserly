@@ -60,6 +60,27 @@ namespace Fasserly.Database.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("Fasserly.Database.Entities.Photo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserFasserlyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserFasserlyId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("Fasserly.Database.Entities.Promotion", b =>
                 {
                     b.Property<Guid>("PromotionId")
@@ -137,6 +158,9 @@ namespace Fasserly.Database.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Bio")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -358,6 +382,13 @@ namespace Fasserly.Database.Migrations
 
                     b.HasOne("Fasserly.Database.Entities.UserFasserly", "UserFasserly")
                         .WithMany()
+                        .HasForeignKey("UserFasserlyId");
+                });
+
+            modelBuilder.Entity("Fasserly.Database.Entities.Photo", b =>
+                {
+                    b.HasOne("Fasserly.Database.Entities.UserFasserly", null)
+                        .WithMany("Photos")
                         .HasForeignKey("UserFasserlyId");
                 });
 

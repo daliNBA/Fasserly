@@ -1,5 +1,5 @@
 ﻿using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
+using Fasserly.Infrastructure.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -15,7 +15,6 @@ namespace Fasserly.Infrastructure.Security
         private readonly SymmetricSecurityKey _key;
         public JwtGenerator(IConfiguration configuration)
         {
-            var key = configuration["TokenKey"];
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
         }
 

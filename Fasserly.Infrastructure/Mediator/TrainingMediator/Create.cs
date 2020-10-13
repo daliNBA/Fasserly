@@ -1,7 +1,7 @@
 ﻿using Fasserly.Database;
 using Fasserly.Database.Entities;
-using Fasserly.Database.Interface;
 using Fasserly.Infrastructure.DataAccess;
+using Fasserly.Infrastructure.Interface;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,6 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Fasserly.Infrastructure.Mediator.TrainingMediator
 {

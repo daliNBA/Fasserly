@@ -6,8 +6,8 @@ import { Route, RouteComponentProps, withRouter, Switch } from 'react-router-dom
 import TrainingDashboard from '../../features/Training/defaultDashboard';
 import TrainingEdit from '../../features/Training/form';
 import TrainingDetails from '../../features/Training/detail';
+import ProfilePage from '../../features/Profile/ProfilePage';
 import NotFound from './NoFound';
-import LoginFrom from '../../features/User/LoginForm'
 import { ToastContainer } from 'react-toastify';
 import { BaseRepositoryContext } from '../repositories/baseRepository';
 import Loading from './Loading';
@@ -39,7 +39,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                         <Route exact path='/trainings' component={TrainingDashboard} />
                         <Route key={location.key} exact path={['/createTraining', '/manage/:id']} component={TrainingEdit} />
                         <Route path='/detailTraining/:id' component={TrainingDetails} />
-                        <Route path='/login' component={LoginFrom} />
+                        <Route path='/profile/:username' component={ProfilePage} />
                         <Route component={NotFound} />
                     </Switch>
                 </Container>
