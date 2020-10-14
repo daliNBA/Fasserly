@@ -88,7 +88,7 @@ export default class ProfileRepository {
         try {
             await agent.profileAgent.deletePhoto(photo.id);
             runInAction(() => {
-                this.profile!.photos=this.profile!.photos.filter(a => a.id !== photo.id);
+                this.profile!.photos = this.profile!.photos.filter(a => a.id !== photo.id);
                 this.loading = false;
             })
         } catch (e) {
@@ -96,6 +96,22 @@ export default class ProfileRepository {
             toast.error("Problem deleting photo!");
             runInAction(() => {
                 this.loading = false;
+            })
+        }
+    }
+
+    @action editProfile = async (profile: Partial<IProfile>) => {
+        try {
+            await agent.profileAgent.editProfile(profile);
+            runInAction(() => {
+                if (profile.displayName !== this.baseRepository.userRepository.user!.displayName) {
+                    this.baseRepository.userRepository.user!.displayName = profile.displayName!;
+                }
+                this.profile = { ...this.profile!, ...profile }
+            })
+        } catch (e) {
+            toast.error("Problem updating profile");
+            runInAction(() => {
             })
         }
     }

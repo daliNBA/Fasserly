@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Fasserly.Infrastructure.Profiles
+namespace Fasserly.Infrastructure.Mediator.ProfileMediator
 {
     public class Details
     {
@@ -28,6 +28,7 @@ namespace Fasserly.Infrastructure.Profiles
                     DisplayName = user.DisplayName,
                     Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                     Photos = user.Photos,
+                    Email =user.Email,
                     Bio = user.Bio
                 };
             }

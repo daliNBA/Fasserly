@@ -11,6 +11,7 @@
     <None Remove="client-app\src\NewFolder\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="client-app\src\app\common\EditProfile\ProfileEditForm.tsx" />
     <None Remove="client-app\src\app\common\form\ErrorMessage.tsx" />
     <None Remove="client-app\src\app\common\form\inputDate.tsx" />
     <None Remove="client-app\src\app\common\form\inputNumber.tsx" />
@@ -39,6 +40,7 @@
     <None Remove="client-app\src\features\Nav\Nav-drp-menu\IT_Menu.tsx" />
     <None Remove="client-app\src\features\Nav\navBar.tsx" />
     <None Remove="client-app\src\features\Profile\ProfileContent.tsx" />
+    <None Remove="client-app\src\features\Profile\ProfileDescription.tsx" />
     <None Remove="client-app\src\features\Profile\ProfileHeader.tsx" />
     <None Remove="client-app\src\features\Profile\ProfilePage.tsx" />
     <None Remove="client-app\src\features\Profile\ProfilePhotos.tsx" />
@@ -64,6 +66,7 @@
     <ProjectReference Include="..\Fasserly.Infrastructure\Fasserly.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="client-app\src\app\common\EditProfile\ProfileEditForm.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\ErrorMessage.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputDate.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputSelect.tsx" />
@@ -94,6 +97,7 @@
     <TypeScriptCompile Include="client-app\src\features\Nav\Nav-drp-menu\IT_Menu.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Nav\navBar.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Profile\ProfileContent.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Profile\ProfileDescription.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Profile\ProfileHeader.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Profile\ProfilePage.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Profile\ProfilePhotos.tsx" />
