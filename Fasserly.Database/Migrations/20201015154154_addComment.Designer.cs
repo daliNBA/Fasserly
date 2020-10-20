@@ -4,14 +4,16 @@ using Fasserly.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fasserly.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20201015154154_addComment")]
+    partial class addComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,21 +224,6 @@ namespace Fasserly.Database.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Fasserly.Database.Entities.UserFollowing", b =>
-                {
-                    b.Property<string>("ObserverId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TargetId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ObserverId", "TargetId");
-
-                    b.HasIndex("TargetId");
-
-                    b.ToTable("UserFollowings");
-                });
-
             modelBuilder.Entity("Fasserly.Database.Entities.UserTraining", b =>
                 {
                     b.Property<string>("UserFasserlyId")
@@ -420,21 +407,6 @@ namespace Fasserly.Database.Migrations
                     b.HasOne("Fasserly.Database.Entities.UserFasserly", null)
                         .WithMany("Trainings")
                         .HasForeignKey("UserFasserlyId");
-                });
-
-            modelBuilder.Entity("Fasserly.Database.Entities.UserFollowing", b =>
-                {
-                    b.HasOne("Fasserly.Database.Entities.UserFasserly", "Observer")
-                        .WithMany("Followings")
-                        .HasForeignKey("ObserverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Fasserly.Database.Entities.UserFasserly", "Target")
-                        .WithMany("Followers")
-                        .HasForeignKey("TargetId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Fasserly.Database.Entities.UserTraining", b =>

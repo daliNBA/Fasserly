@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { BaseRepository } from './baseRepository'
 import { setTrainingProps, soldTraining } from '../common/util/util';
 import { SyntheticEvent } from 'react';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export default class TrainingRepository {
 
@@ -20,9 +21,58 @@ export default class TrainingRepository {
     @observable trainingRegestry = new Map();
     @observable target = '';
     @observable loadingBuy = false;
+    //the hole class will be observe it (Hub connexion SignalR)
+    @observable.ref hubConnection: HubConnection | null = null;
 
     @computed get trainingByDate() {
         return this.sortByDate(Array.from(this.trainingRegestry.values()));
+    }
+
+    //Hub for Signal token connection
+    @action createHubConnection = (trainingId: string) => {
+        this.hubConnection = new HubConnectionBuilder()
+            //this url must have the same url of server
+            .withUrl('https://localhost:44310/chat', {
+                accessTokenFactory: () => this._baseRepository.commonRepository.token!
+            })
+            .configureLogging(LogLevel.Information)
+            .build();
+        this.hubConnection.start()
+            .then(() => console.log(this.hubConnection!.state))
+            .then(() => {
+                console.log("Attempting to join group");
+                //have to much to same name of methode chatHub
+                this.hubConnection!.invoke('AddToGroup', trainingId);
+            })
+            .catch(error => console.log('Error estabilshed connection', error));
+        //this must match the same of ReceiveComment in chatHub
+        this.hubConnection.on('ReceiveComment', comment => {
+            runInAction(() => {
+                this.training!.comments.push(comment);
+            })
+        })
+        this.hubConnection.on('Send', message => {
+            toast.info(message);
+        })
+    }
+
+    @action stopHubConnection = () => {
+        this.hubConnection!.invoke('RemoveFromGroup', this.training?.trainingId)
+            .then(() => {
+                this.hubConnection?.stop()
+            }).then(() => console.log('Connection stopped'))
+            .catch(err => console.log(err));
+        this.hubConnection!.stop();
+    }
+
+    @action addcomment = async (values: any) => {
+        values.trainingId = this.training?.trainingId;
+        try {
+            //SendComment must have the same name of methode in hubChat
+            await this.hubConnection!.invoke('SendComment', values)
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     sortByDate(trainings: ITraining[]) {
@@ -65,6 +115,7 @@ export default class TrainingRepository {
             buyers.push(buyer);
             training.buyers = buyers;
             training.isOwner = true;
+            training.comments = [];
             runInAction('Creating training', () => {
                 this.trainingRegestry.set(training.trainingId, training);
                 this.training = training;
@@ -157,7 +208,7 @@ export default class TrainingRepository {
                     this.training.isBuyer = true;
                     this.trainingRegestry.set(this.training.trainingId, this.training);
                     this.loadingBuy = false;
-                }              
+                }
             })
 
         } catch (error) {
@@ -168,7 +219,7 @@ export default class TrainingRepository {
         }
     }
 
-    @action refundTraining = async () => {  
+    @action refundTraining = async () => {
         this.loadingBuy = true;
         try {
             await agent.trainingAgent.refund(this.training!.trainingId);
@@ -178,14 +229,14 @@ export default class TrainingRepository {
                     this.training.isBuyer = false;
                     this.trainingRegestry.set(this.training.trainingId, this.training);
                     this.loadingBuy = false;
-                }   
+                }
             })
         } catch (error) {
             runInAction(() => {
                 this.loadingBuy = false;
             })
             toast.error('Problem buying course')
-        }     
+        }
     }
 
     @action getTraining = (id: string) => {

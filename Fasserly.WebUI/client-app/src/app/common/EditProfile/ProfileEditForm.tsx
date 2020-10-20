@@ -1,9 +1,8 @@
-﻿import React, { useContext } from 'react';
+﻿import React from 'react';
 import { Form as FinalForm, Field } from 'react-final-form';
-import { Form, Button, Header } from 'semantic-ui-react';
+import { Form, Button, } from 'semantic-ui-react';
 import TextInput from '../form/inputText';
 import InputTextArea from '../form/inputTextArea';
-import ErrorMessage from '../form/ErrorMessage';
 import { combineValidators, isRequired } from 'revalidate';
 import { IProfile } from '../../models/IPorfile';
 import { observer } from 'mobx-react-lite';

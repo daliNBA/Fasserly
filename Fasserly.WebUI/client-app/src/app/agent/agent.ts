@@ -65,7 +65,10 @@ const profileAgent = {
     uploadPhoto: (photo: Blob): Promise<IPhoto> => requests.postForm(`/photo`, photo),
     setMainPhoto: (id: string) => requests.post(`/photo/${id}/setmain`, {}),
     deletePhoto: (id: string) => requests.delete(`/photo/${id}`),
-    editProfile: (profile: Partial<IProfile>) => requests.put(`/profile`, profile)
+    editProfile: (profile: Partial<IProfile>) => requests.put(`/profile`, profile),
+    follow: (username: string) => requests.post(`/profile/${username}/follow`, {}),
+    unfollow: (username: string) => requests.delete(`/profile/${username}/follow`),
+    listFollowings: (username: string, predicate: string) => requests.get(`/profile/${username}/follow?predicate=${predicate}`),
 }
 //User Agent
 const userAgent = {

@@ -7,9 +7,9 @@ namespace Fasserly.Database.Entities
     public class Comment
     {
         public Guid CommentId { get; set; }
-        public string Text { get; set; }
-        public virtual UserFasserly UserFasserly { get; set; }
-        public DateTime DateOfComment { get; set; }
+        public string Body { get; set; }
+        public virtual UserFasserly Author { get; set; }
         public virtual Training Training { get; set; }
+        public DateTime DateOfComment { get; set; }
     }
 }

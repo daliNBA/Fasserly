@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fasserly.Database.Entities
 {
@@ -11,5 +10,7 @@ namespace Fasserly.Database.Entities
         public virtual ICollection<UserTraining> UserTrainings { get; set; } = new HashSet<UserTraining>();
         public virtual ICollection<Training> Trainings { get; set; } = new HashSet<Training>();
         public virtual ICollection<Photo> Photos { get; set; } = new HashSet<Photo>();
+        public virtual ICollection<UserFollowing> Followings { get; set; }
+        public virtual ICollection<UserFollowing> Followers { get; set; }
     }
 }

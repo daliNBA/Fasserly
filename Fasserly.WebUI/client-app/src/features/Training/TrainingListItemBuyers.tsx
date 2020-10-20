@@ -5,6 +5,10 @@ import { IBuyer } from '../../app/models/ITraining';
 interface IProps {
     buyers: IBuyer[]
 }
+const styles = {
+    borderColor: 'orange',
+    borderWidth: 2
+}
 
 const TrainingListItemBuyers: React.FC<IProps> = ({ buyers }) => {
     return (
@@ -12,7 +16,13 @@ const TrainingListItemBuyers: React.FC<IProps> = ({ buyers }) => {
             {buyers.map((buyer) => (
                 <List.Item key={buyer.username} >
                     <Popup header={buyer.displayName}
-                        trigger={<Image size='mini' circular src={buyer.image || '/assets/user.jpg'} />}
+                        trigger={
+                            <Image
+                                size='mini'
+                                circular src={buyer.image || '/assets/user.jpg'}
+                                bordered
+                                style={buyer.following ? styles: null}
+                            />}
                     />
                 </List.Item>
             ))}

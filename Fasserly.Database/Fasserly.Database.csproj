@@ -19,6 +19,8 @@
     <Compile Remove="Migrations\20201002125104_addUserTraining.Designer.cs" />
     <Compile Remove="Migrations\20201006142400_userTrainings.cs" />
     <Compile Remove="Migrations\20201006142400_userTrainings.Designer.cs" />
+    <Compile Remove="Migrations\20201014150133_addComments.cs" />
+    <Compile Remove="Migrations\20201014150133_addComments.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

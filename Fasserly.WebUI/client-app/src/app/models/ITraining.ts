@@ -11,12 +11,20 @@
     category: string;
     isBuyer: boolean;
     isOwner: boolean;
-    buyers: IBuyer[]
+    buyers: IBuyer[];
+    comments: IComment[]
 }
 export interface ITrainingFormValue extends Partial<ITraining> {
     time?: Date
 }
-
+export interface IComment {
+    trainingId: string;
+    dateOfComment: string;
+    body: string;
+    username: string;
+    diplayName: string;
+    image: string;
+}
 export class TrainingFormValues implements ITrainingFormValue {
     trainingId: string = '';
     title: string = '';
@@ -39,4 +47,5 @@ export interface IBuyer {
     displayName: string;
     image: string;
     isOwner: boolean;
+    following?: boolean;
 }

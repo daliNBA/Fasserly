@@ -18,7 +18,6 @@ export default class UserRepository {
     @action login = async (values: IUserFromValues) => {
         try {
             const user = await agent.userAgent.login(values);
-            console.log(user.displayName);
             runInAction(() => {
                 this.user = user;
             })

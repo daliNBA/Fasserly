@@ -2,7 +2,6 @@
 using Fasserly.Infrastructure.DataAccess;
 using Fasserly.Infrastructure.Error;
 using Fasserly.Infrastructure.Interface;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,24 +9,14 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Fasserly.Infrastructure.Mediator.ProfileMediator
+namespace Fasserly.Infrastructure.Mediator.Followers
 {
 
-    public class Edit
+    public class Delete
     {
         public class Command : IRequest
         {
-            public string DisplayName { get; set; }
-            public string Bio { get; set; }
-        }
-
-        public class TrainingValidation : AbstractValidator<Command>
-        {
-            public TrainingValidation()
-            {
-                RuleFor(x => x.DisplayName).NotEmpty();
-                RuleFor(x => x.Bio).NotEmpty().WithMessage("Bio est obligatoire");
-            }
+            public string Username { get; set; }
         }
 
         public class Handler : BaseDataAccess, IRequestHandler<Command>
@@ -41,12 +30,19 @@ namespace Fasserly.Infrastructure.Mediator.ProfileMediator
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
-                if (user == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { user = "Not found" });
+                var observer = await context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
 
-                user.DisplayName = request.DisplayName;
-                user.Bio = request.Bio;
+                var target = await context.Users.SingleOrDefaultAsync(x => x.UserName == request.Username);
+
+                if (target == null)
+                    throw new RestException(HttpStatusCode.NotFound, new { follower = "Not found" });
+
+                var following = await context.UserFollowings.SingleOrDefaultAsync(x => x.ObserverId == observer.Id && x.TargetId == target.Id);
+                if (following == null)
+                    throw new RestException(HttpStatusCode.NotFound, new { following = "Following dosn't exist" });
+
+                if (following != null)
+                    context.Remove(following);
 
                 var success = await context.SaveChangesAsync() > 0;
                 if (success) return Unit.Value;

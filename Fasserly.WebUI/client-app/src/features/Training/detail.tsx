@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 import TrainingDetailInfo from './trainingItem/trainingDetailInfo';
 import TrainingDetailSideBar from './trainingItem/trainingDetailSideBar';
+import TrainingDetailedChat from './trainingItem/TrainingDetailedChat';
 
 
 interface DetailsParams {
@@ -68,6 +69,7 @@ const TrainingDetails: React.FC<RouteComponentProps<DetailsParams>> = ({ match, 
                     }
                 </Card>
                 <TrainingDetailInfo training={training} />
+                <TrainingDetailedChat />
             </GridColumn>
             <GridColumn width={6}>
                 <TrainingDetailSideBar buyers={training.buyers} />

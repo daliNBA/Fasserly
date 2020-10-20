@@ -10,5 +10,6 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
         public string DisplayName { get; set; }
         public string Image { get; set; }
         public bool IsOwner { get; set; }
+        public bool Following { get; set; }
     }
 }

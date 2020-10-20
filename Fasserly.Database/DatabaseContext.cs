@@ -15,26 +15,27 @@ namespace Fasserly.Database
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<UserTraining> UserTrainings { get; set; }
-
+        public DbSet<UserFollowing> UserFollowings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserTraining>(x => x.HasKey(ua => new { ua.UserFasserlyId, ua.TrainingId }));
 
-            //modelBuilder.Entity<Training>()
-            //    .HasOne(u => u.Owner)
-            //    .WithMany(a => a.Trainings).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<UserFollowing>(b =>
+            {
+                b.HasKey(k => new { k.ObserverId, k.TargetId });
 
-            //modelBuilder.Entity<UserTraining>()
-            //    .HasOne(u => u.UserFasserly)
-            //    .WithMany(a => a.UserTrainings)
-            //    .HasForeignKey(u => u.UserFasserlyId);
+                b.HasOne(o => o.Observer)
+                    .WithMany(f => f.Followings)
+                    .HasForeignKey(o => o.ObserverId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<UserTraining>()
-            //    .HasOne(t => t.Training)
-            //    .WithMany(ut => ut.UserTrainings)
-            //    .HasForeignKey(t => t.TrainingId);
+                b.HasOne(o => o.Target)
+                    .WithMany(f => f.Followers)
+                    .HasForeignKey(o => o.TargetId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Fasserly.Database.Entities;
 using Fasserly.Infrastructure.Mediator.CategoryMediator;
+using Fasserly.Infrastructure.Mediator.CommentMediator;
 using Fasserly.Infrastructure.Mediator.UserMediator;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,6 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
 
         [JsonPropertyName("buyers")]
         public ICollection<BuyerDto> UserTrainings { get; set; }
+        public ICollection<CommentDto> Comments { get; set; }
     }
 }
