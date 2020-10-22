@@ -20,7 +20,7 @@ namespace Fasserly.Migrator
 
             //var configuration = new ConfigurationBuilder().AddEnvironmentVariables().AddUserSecrets("LearnToTech.Migration").Build();
             //var configuration = new ConfigurationBuilder().Build();
-            string connectionString = configuration.GetConnectionString("FasserlyDatabase");
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
             var options = new DbContextOptionsBuilder<DatabaseContext>().UseSqlServer(connectionString, x => x.CommandTimeout(3600 * 6)).Options;
             return new DatabaseContext(options);
         }
