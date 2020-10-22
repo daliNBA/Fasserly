@@ -1,4 +1,8 @@
-﻿export interface ITraining {
+﻿export interface ITrainingEnvelope {
+    trainings: ITraining[];
+    trainingCount: number;
+}
+export interface ITraining {
     trainingId: string;
     title: string;
     description: string;
@@ -11,7 +15,7 @@
     category: string;
     isBuyer: boolean;
     isOwner: boolean;
-    buyers: IBuyer[];
+    buyers?: IBuyer[];
     comments: IComment[]
 }
 export interface ITrainingFormValue extends Partial<ITraining> {

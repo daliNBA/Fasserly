@@ -1,29 +1,52 @@
-﻿import React, { useContext, useEffect } from 'react';
-import { Grid, GridColumn } from 'semantic-ui-react';
+﻿import React, { useContext, useEffect, useState } from 'react';
+import { Grid, GridColumn, Loader } from 'semantic-ui-react';
 import TrainingsList from './trainingList';
 import { observer } from 'mobx-react-lite';
-import Loading from '../../app/layout/Loading';
 import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
+import TrainingFilters from '../Training/dashboard/TrainingFilters'
+import TrainingItemPlaceholder from '../Training/dashboard/TrainingItemPlaceholder'
+import InfiniteScroll from 'react-infinite-scroller';
 
 const TrainingDashboard: React.FC = () => {
 
     const baseRepository = useContext(BaseRepositoryContext);
-    const { trainingList, loading } = baseRepository.trainingsRepository;
+    const { loadTrainings, loading, setPage, page, totalPages } = baseRepository.trainingsRepository;
+    const token = window.localStorage.getItem('jwt');
+    const { isLoggedIn } = baseRepository.userRepository;
+    const [loadingNext, setLoadingNext] = useState(false);
 
+    const handleGetNext = () => {
+        setLoadingNext(true);
+        setPage(page + 1);
+        loadTrainings().then(() => setLoadingNext(false));
+    }
     useEffect(() => {
-        trainingList();
-    }, [trainingList]);
-
-    if (loading) return <Loading content={"Loading.."} />
+            loadTrainings();
+    }, [loadTrainings]);
 
     return (
         <Grid>
             <GridColumn width={10}>
-                <TrainingsList />
+                {loading && page === 0 ? <TrainingItemPlaceholder /> : (
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={handleGetNext}
+                        hasMore={!loadingNext && page + 1 < totalPages}
+                        initialLoad={false}
+                    >
+                        <TrainingsList />
+                    </InfiniteScroll>
+                )}
             </GridColumn>
-            <Grid.Column width={6}>
-                <h2>Activity filters</h2>
+            {isLoggedIn && token &&
+                <Grid.Column width={6}>
+                    <TrainingFilters />
+                </Grid.Column>
+            }
+            <Grid.Column width={10}>
+                <Loader active={loadingNext} />
             </Grid.Column>
+
         </Grid>
     );
 }

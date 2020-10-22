@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Fasserly.WebUI.Controllers
@@ -16,9 +15,9 @@ namespace Fasserly.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TrainingDto>>> Get()
+        public async Task<ActionResult<List.TrainingEnvelope>> Get(int? limit, int? offset, bool isBuyer, bool isOwner, DateTime? startDate)
         {
-            return await Mediator.Send(new List.Query());
+            return await Mediator.Send(new List.Query(limit, offset, isBuyer, isOwner, startDate));
         }
 
         // GET api/Training/2C:\Users\Asus\source\repos\Fasserly\Fasserly.WebUI\Controllers\TrainingController.cs

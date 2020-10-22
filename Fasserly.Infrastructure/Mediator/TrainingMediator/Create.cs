@@ -59,7 +59,7 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
                     Description = request.Description,
                     Price = Convert.ToDecimal(request.Price, new CultureInfo("en-US")),
                     Language = request.Language,
-                    category = cat,
+                    Category = cat,
                 };
                 context.Trainings.Add(training);
 

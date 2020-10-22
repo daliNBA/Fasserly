@@ -10,6 +10,14 @@
     photos: IPhoto[];
 }
 
+export interface IUserTraining {
+    id: string;
+    title: string;
+    category: string;
+    date: Date;
+}
+
+
 export interface IPhoto {
     id: string;
     url: string;

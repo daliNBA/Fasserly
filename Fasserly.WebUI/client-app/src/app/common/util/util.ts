@@ -9,15 +9,17 @@ export const combineTimeAndDate = (date: Date) => {
     return new Date(stringDate);
 }
 
-export const setTrainingProps = (training: ITraining, user: IUser) =>
+export const setTrainingProps = (training: ITraining, user: IUser, isLogged: boolean) =>
 {
     training.dateOfCreation = new Date(training.dateOfCreation);
-    training.isBuyer = training.buyers.some(
-        a => a.username === user.username
-    )
-    training.isOwner = training.buyers.some(
-        b => b.username === user.username && b.isOwner
-    )
+    if (isLogged) {
+        training.isBuyer = training.buyers!.some(
+            a => a.username === user.username
+        )
+        training.isOwner = training.buyers!.some(
+            b => b.username === user.username && b.isOwner
+        )
+    }
     return training;
 }
 

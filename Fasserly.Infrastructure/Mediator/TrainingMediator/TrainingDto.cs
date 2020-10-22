@@ -1,7 +1,5 @@
-﻿using Fasserly.Database.Entities;
-using Fasserly.Infrastructure.Mediator.CategoryMediator;
+﻿using Fasserly.Infrastructure.Mediator.CategoryMediator;
 using Fasserly.Infrastructure.Mediator.CommentMediator;
-using Fasserly.Infrastructure.Mediator.UserMediator;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;

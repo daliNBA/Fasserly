@@ -6,7 +6,6 @@ import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 import { format } from 'date-fns';
 
 const TrainingsList = () => {
-
     const baseRepository = useContext(BaseRepositoryContext);
     const { trainingByDate } = baseRepository.trainingsRepository;
     return (

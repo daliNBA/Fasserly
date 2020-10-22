@@ -5,11 +5,12 @@ import { IBuyer } from '../../../app/models/ITraining';
 import { observer } from 'mobx-react-lite';
 
 interface IProps {
-    buyers: IBuyer[];
+    buyers: IBuyer[] | null;
 }
 
 const ActivityDetailedSidebar: React.FC<IProps> = ({ buyers }) => {
     return (
+
         <Fragment>
             <Segment
                 textAlign='center'
@@ -19,11 +20,11 @@ const ActivityDetailedSidebar: React.FC<IProps> = ({ buyers }) => {
                 inverted
                 color='teal'
             >
-                {buyers.length} {buyers.length === 1 ? "Person" : "People"} participate
+                {buyers!.length} {buyers!.length === 1 ? "Person" : "People"} participate
       </Segment>
             <Segment attached>
                 <List relaxed divided>
-                    {buyers.map((buyer) =>
+                    {buyers!.map((buyer) =>
                         <Item key={buyer.username} style={{ position: 'relative' }} >
                             {buyer.isOwner && <Label
                                 style={{ position: 'absolute' }}

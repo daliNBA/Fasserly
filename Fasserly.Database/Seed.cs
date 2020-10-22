@@ -80,7 +80,7 @@ namespace Fasserly.Database
                         Rating = 5,
                         Language = "Français",
                         IsActive = true,
-                        category = new Category
+                        Category = new Category
                         {
                             Label ="Management",
                         },
@@ -109,7 +109,7 @@ namespace Fasserly.Database
                         Rating = 5,
                         Language = "Français",
                         IsActive = true,
-                         category = new Category
+                         Category = new Category
                         {
                             Label ="Management",
                         },
@@ -138,7 +138,7 @@ namespace Fasserly.Database
                         Rating = 5,
                         Language = "Français",
                         IsActive = true,
-                        category = new Category
+                        Category = new Category
                         {
                             Label ="Web",
                         },

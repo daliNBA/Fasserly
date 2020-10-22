@@ -9,9 +9,10 @@ interface IProps {
     loading: boolean,
     follow: (username: string) => void;
     unfollow: (username: string) => void;
+    isLoggedIn: boolean;
 }
 
-const ProfileHeader: React.FC<IProps> = ({ profile, follow, unfollow, loading, isCurrentUser }) => {
+const ProfileHeader: React.FC<IProps> = ({ profile, follow, unfollow, loading, isCurrentUser, isLoggedIn }) => {
     return (
         <Segment>
             <Grid>
@@ -21,7 +22,7 @@ const ProfileHeader: React.FC<IProps> = ({ profile, follow, unfollow, loading, i
                             <Item.Image
                                 avatar
                                 size='small'
-                                src={profile.image || '/assets/user.jpg'}
+                                src={profile.image! || '/assets/user.jpg'}
                             />
                             <Item.Content verticalAlign='middle'>
                                 <Header as='h1'>{profile.displayName}</Header>
@@ -35,7 +36,7 @@ const ProfileHeader: React.FC<IProps> = ({ profile, follow, unfollow, loading, i
                         <Statistic label='Following' value={profile.followingsCount} />
                     </Statistic.Group>
                     <Divider />
-                    {!isCurrentUser &&
+                    {!isCurrentUser && isLoggedIn &&
                         <Reveal animated='move'>
                             <Reveal.Content visible style={{ width: '100%' }}>
                                 <Button

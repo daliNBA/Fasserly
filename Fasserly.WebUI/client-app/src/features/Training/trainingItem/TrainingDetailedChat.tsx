@@ -10,6 +10,7 @@ import { formatDistance } from 'date-fns';
 const TrainingDetailedChat = () => {
     const baseRepo = useContext(BaseRepositoryContext);
     const { createHubConnection, stopHubConnection, addcomment, training } = baseRepo.trainingsRepository;
+    const { isLoggedIn } = baseRepo.userRepository;
     useEffect(() => {
         createHubConnection(training!.trainingId);
         return () => {
@@ -29,8 +30,8 @@ const TrainingDetailedChat = () => {
             </Segment>
             <Segment attached>
                 <Comment.Group>
-                    {training && training.comments && training && training.comments.map((comment) => (
-                        <Comment key={comment.trainingId}>
+                    {training && training.comments && training.comments.map((comment) => (
+                        <Comment key={comment.dateOfComment}>
                             <Comment.Avatar src={comment.image || '/assets/user.png'} />
                             <Comment.Content>
                                 <Comment.Author as={Link} to={`/profile/${comment.username}`}>{comment.diplayName}</Comment.Author>
@@ -41,7 +42,8 @@ const TrainingDetailedChat = () => {
                             </Comment.Content>
                         </Comment>
                     ))}
-                    <FinalFrom
+                    {isLoggedIn &&
+                        <FinalFrom
                         onSubmit={addcomment}
                         render={({ handleSubmit, submitting, form }) => (
                             <Form onSubmit={() => handleSubmit()!.then(() => form.reset())}>
@@ -60,7 +62,7 @@ const TrainingDetailedChat = () => {
                                 />
                             </Form>
                         )}
-                    />
+                    />}
                 </Comment.Group>
             </Segment>
         </Fragment>

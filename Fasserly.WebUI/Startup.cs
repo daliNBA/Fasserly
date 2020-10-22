@@ -21,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,7 +52,11 @@ namespace Fasserly.WebUI
             {
                 option.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000").AllowCredentials();
+                    policy.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithExposedHeaders("WWW-Authenticate")
+                    .WithOrigins("http://localhost:3000")
+                    .AllowCredentials();
                 });
             });
 
@@ -96,7 +101,9 @@ namespace Fasserly.WebUI
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = key,
                         ValidateAudience = false,
-                        ValidateIssuer = false
+                        ValidateIssuer = false,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
                     };
                     opt.Events = new JwtBearerEvents
                     {
@@ -145,14 +152,21 @@ namespace Fasserly.WebUI
             }
 
             // app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseCors("CorsPolicy");
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }

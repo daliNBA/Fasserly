@@ -21,12 +21,15 @@
     <Compile Remove="Migrations\20201006142400_userTrainings.Designer.cs" />
     <Compile Remove="Migrations\20201014150133_addComments.cs" />
     <Compile Remove="Migrations\20201014150133_addComments.Designer.cs" />
+    <Compile Remove="Migrations\20201022092308_Update.cs" />
+    <Compile Remove="Migrations\20201022092308_Update.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
     <PackageReference Include="System.Spatial" Version="5.8.4" />
   </ItemGroup>
 

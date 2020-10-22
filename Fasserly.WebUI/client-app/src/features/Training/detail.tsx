@@ -72,7 +72,7 @@ const TrainingDetails: React.FC<RouteComponentProps<DetailsParams>> = ({ match, 
                 <TrainingDetailedChat />
             </GridColumn>
             <GridColumn width={6}>
-                <TrainingDetailSideBar buyers={training.buyers} />
+                <TrainingDetailSideBar buyers={training.buyers!} />
             </GridColumn>
         </Grid>
     );

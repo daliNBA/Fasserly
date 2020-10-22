@@ -20,8 +20,9 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
         public bool Resolve(UserTraining source, BuyerDto destination, bool destMember, ResolutionContext _context)
         {
             var currentUser = context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName()).Result;
-            if (currentUser.Followings.Any(x => x.TargetId == source.UserFasserlyId))
-                return true;
+            if (currentUser != null)
+                if (currentUser.Followings.Any(x => x.TargetId == source.UserFasserlyId))
+                    return true;
             return false;
         }
     }

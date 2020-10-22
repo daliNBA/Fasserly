@@ -15,7 +15,7 @@ const NavBar: React.FC = () => {
     return (
         <div>
             <Menu pointing>
-                <Menu.Item as={NavLink} exact to='/' name='home'>
+                <Menu.Item as={NavLink} exact to='/trainings' name='home'>
                     <img src='/assets/Logo.png' alt='Logo' height='30px' width='30' />
                 </Menu.Item>
                 <Dropdown
@@ -47,7 +47,7 @@ const NavBar: React.FC = () => {
                             <Dropdown pointing='top right' text={user.displayName}>
                                 <Dropdown.Menu>
                                     <Dropdown.Item as={Link} to={`/profile/${user.username}`} text='My profile' icon='user' />
-                                    <Dropdown.Item onClick={logout} text='Logout' icon='power' />
+                                    <Dropdown.Item onClick={logout} text='Logout' icon='power'/>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Menu.Item>

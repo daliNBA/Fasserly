@@ -35,8 +35,9 @@ namespace Fasserly.Infrastructure.Mediator.ProfileMediator
                 FollowersCount = user.Followers.Count(),
                 FollowingsCount = user.Followings.Count(),
             };
-            if (currentUser.Followings.Any(x => x.TargetId == user.Id))
-                profile.IsFollowed = true;
+            if (currentUser != null)
+                if (currentUser.Followings.Any(x => x.TargetId == user.Id))
+                    profile.IsFollowed = true;
 
             return profile;
         }

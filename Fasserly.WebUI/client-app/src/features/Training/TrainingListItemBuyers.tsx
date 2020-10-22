@@ -3,7 +3,7 @@ import { List, Image, Popup } from 'semantic-ui-react';
 import { IBuyer } from '../../app/models/ITraining';
 
 interface IProps {
-    buyers: IBuyer[]
+    buyers: IBuyer[] | null
 }
 const styles = {
     borderColor: 'orange',
@@ -13,7 +13,7 @@ const styles = {
 const TrainingListItemBuyers: React.FC<IProps> = ({ buyers }) => {
     return (
         <List horizontal>
-            {buyers.map((buyer) => (
+            {buyers && buyers.map((buyer) => (
                 <List.Item key={buyer.username} >
                     <Popup header={buyer.displayName}
                         trigger={

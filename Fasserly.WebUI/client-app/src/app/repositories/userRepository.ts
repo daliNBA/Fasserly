@@ -24,6 +24,7 @@ export default class UserRepository {
             this._baseRepository.commonRepository.setToken(user.token);
             this._baseRepository.modalRepository.closeModal();
             history.push('/trainings');
+            this._baseRepository.trainingsRepository.loadTrainings();
             console.log(this.user);
         } catch (error) {
             console.log(error);
@@ -62,5 +63,6 @@ export default class UserRepository {
     @action logout = () => {
         this._baseRepository.commonRepository.setToken(null);
         this.user = null;
+        this._baseRepository.trainingsRepository.loadTrainings();
     }
 }

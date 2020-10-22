@@ -8,13 +8,14 @@ import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 
 const trainingImageStyle = {
     filtre: 'Brightness(50%)',
-    marginBottom : 3
+    marginBottom: 3
 }
 
 const TrainingItem: React.FC<{ training: ITraining }> = ({ training }) => {
-    const owner = training.buyers.filter(x => x.isOwner)[0];
+    const owner = training.buyers!.filter(x => x.isOwner)[0];
     const _baseRepository = useContext(BaseRepositoryContext);
     const { buyTraining } = _baseRepository.trainingsRepository;
+    const { isLoggedIn } = _baseRepository.userRepository;
     return (
         <Segment.Group>
             <Segment>
@@ -26,8 +27,8 @@ const TrainingItem: React.FC<{ training: ITraining }> = ({ training }) => {
                                 {training.title}
                             </Item.Header>
                             <Item.Description>Created By <Link to={`/profile/${owner.username}`}><strong>{owner.displayName}</strong></Link> </Item.Description>
-                            <Item.Description><Rating maxRating={5} defaultRating={3} icon='star' size='small' /></Item.Description> 
-                            {training.isOwner && (
+                            <Item.Description><Rating maxRating={5} defaultRating={3} icon='star' size='small' /></Item.Description>
+                            {isLoggedIn && training.isOwner && (
                                 <Item.Description>
                                     <Label
                                         basic
@@ -36,7 +37,7 @@ const TrainingItem: React.FC<{ training: ITraining }> = ({ training }) => {
                                     />
                                 </Item.Description>
                             )}
-                            {training.isBuyer && !training.isOwner && (
+                            {isLoggedIn && training.isBuyer && !training.isOwner && (
                                 <Item.Description>
                                     <Label
                                         basic
@@ -54,15 +55,24 @@ const TrainingItem: React.FC<{ training: ITraining }> = ({ training }) => {
                 <br />
                 <span>{training.description}</span>
             </Segment>
-            <Segment secondary>
-                <TrainingListItemBuyers buyers={training.buyers} />
-            </Segment>
-
-            {!training.isOwner && !training.isBuyer &&
-                <Segment clearing attached="bottom">
-                <Button color="teal" content="Put to basket" />
-                <Button color="orange" onClick={buyTraining} content="Buy now" />
+            {isLoggedIn && (
+                <Segment secondary>
+                    <TrainingListItemBuyers buyers={training.buyers!} />
                 </Segment>
+
+            )}
+
+            {isLoggedIn && !training.isOwner && !training.isBuyer ? (
+                <Segment clearing attached="bottom">
+                    <Button color="teal" content="Put to basket" />
+                    <Button color="orange" onClick={buyTraining} content="Buy now" />
+                </Segment>
+
+            ) : (
+                    <Segment clearing attached="bottom">
+                        <Button color="teal" content="Put to basket" />
+                    </Segment>
+                )
             }
         </Segment.Group>
     );

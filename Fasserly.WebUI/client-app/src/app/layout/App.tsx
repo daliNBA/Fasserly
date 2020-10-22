@@ -26,10 +26,10 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
             setAppLoaded();
         }
     })
-    if (!appLoaded) return <Loading content ='Loading app ...'/>
+    if (!appLoaded) return <Loading content='Loading app ...' />
     return (
         <div>
-            <ModalContainer/>
+            <ModalContainer />
             <Fragment>
                 <ToastContainer position='bottom-right' />
                 <NavBar />

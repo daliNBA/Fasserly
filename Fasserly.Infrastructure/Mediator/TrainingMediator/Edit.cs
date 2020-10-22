@@ -56,7 +56,7 @@ namespace Fasserly.Infrastructure.Mediator.TrainingMediator
                 training.Description = request.Description ?? training.Description;
                 training.Price = Convert.ToDecimal(request.Price, new CultureInfo("en-US"));
                 training.UpdateDate = DateTime.Now;
-                training.category = cat;
+                training.Category = cat;
                 var success = await context.SaveChangesAsync() > 0;
                 if (success) return Unit.Value;
 

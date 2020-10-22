@@ -18,7 +18,7 @@ namespace Fasserly.Database.Entities
         public string Language { get; set; }
         public bool IsActive { get; set; }
         public virtual ICollection<UserTraining> UserTrainings { get; set; } = new HashSet<UserTraining>();
-        public virtual Category category { get; set; }
+        public virtual Category Category { get; set; }
         public virtual ICollection<Comment> comments { get; set; } = new HashSet<Comment>();
     }
 }

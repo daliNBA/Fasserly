@@ -11,6 +11,8 @@
     <None Remove="client-app\src\NewFolder\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="client-app\.env.development" />
+    <None Remove="client-app\.env.production" />
     <None Remove="client-app\src\app\common\EditProfile\ProfileEditForm.tsx" />
     <None Remove="client-app\src\app\common\form\ErrorMessage.tsx" />
     <None Remove="client-app\src\app\common\form\inputDate.tsx" />
@@ -28,6 +30,7 @@
     <None Remove="client-app\src\app\common\util\util.ts" />
     <None Remove="client-app\src\app\layout\Loading.tsx" />
     <None Remove="client-app\src\app\layout\NoFound.tsx" />
+    <None Remove="client-app\src\app\layout\PrivateRoute.tsx" />
     <None Remove="client-app\src\app\layout\ScrollToTop.tsx" />
     <None Remove="client-app\src\app\models\IPorfile.ts" />
     <None Remove="client-app\src\app\models\IUser.ts" />
@@ -46,6 +49,9 @@
     <None Remove="client-app\src\features\Profile\ProfileHeader.tsx" />
     <None Remove="client-app\src\features\Profile\ProfilePage.tsx" />
     <None Remove="client-app\src\features\Profile\ProfilePhotos.tsx" />
+    <None Remove="client-app\src\features\Profile\ProfileTrainings.tsx" />
+    <None Remove="client-app\src\features\Training\dashboard\TrainingFilters.tsx" />
+    <None Remove="client-app\src\features\Training\dashboard\TrainingItemPlaceholder.tsx" />
     <None Remove="client-app\src\features\Training\detail.tsx" />
     <None Remove="client-app\src\features\Training\form.tsx" />
     <None Remove="client-app\src\features\Training\TrainingDetailedChat.tsx" />
@@ -69,6 +75,10 @@
     <ProjectReference Include="..\Fasserly.Infrastructure\Fasserly.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="client-app\.env.development" />
+    <TypeScriptCompile Include="client-app\.env.production">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="client-app\src\app\common\EditProfile\ProfileEditForm.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\ErrorMessage.tsx" />
     <TypeScriptCompile Include="client-app\src\app\common\form\inputDate.tsx" />
@@ -88,6 +98,7 @@
     <TypeScriptCompile Include="client-app\src\app\common\util\util.ts" />
     <TypeScriptCompile Include="client-app\src\app\layout\Loading.tsx" />
     <TypeScriptCompile Include="client-app\src\app\layout\NoFound.tsx" />
+    <TypeScriptCompile Include="client-app\src\app\layout\PrivateRoute.tsx" />
     <TypeScriptCompile Include="client-app\src\app\layout\ScrollToTop.tsx" />
     <TypeScriptCompile Include="client-app\src\app\models\IPorfile.ts" />
     <TypeScriptCompile Include="client-app\src\app\models\IUser.ts" />
@@ -106,6 +117,9 @@
     <TypeScriptCompile Include="client-app\src\features\Profile\ProfileHeader.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Profile\ProfilePage.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Profile\ProfilePhotos.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Profile\ProfileTrainings.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\dashboard\TrainingFilters.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\Training\dashboard\TrainingItemPlaceholder.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\detail.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\form.tsx" />
     <TypeScriptCompile Include="client-app\src\features\Training\trainingItem\TrainingDetailedChat.tsx" />
@@ -119,4 +133,5 @@
     <TypeScriptCompile Include="client-app\src\features\User\RegisterForm.tsx" />
     <TypeScriptCompile Include="client-app\typings-custom\react-cropper.d.ts" />
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties client-app_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

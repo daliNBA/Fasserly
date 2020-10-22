@@ -1,4 +1,4 @@
-﻿import { observable, action, computed, runInAction } from 'mobx'
+﻿import { observable, action, computed, runInAction, reaction } from 'mobx'
 import agent from '../agent/agent';
 import { ITraining } from '../models/ITraining';
 import { history } from '../../index';
@@ -8,12 +8,23 @@ import { setTrainingProps, soldTraining } from '../common/util/util';
 import { SyntheticEvent } from 'react';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
+const LIMIT = 2;
+
 export default class TrainingRepository {
 
     _baseRepository: BaseRepository;
     constructor(baseRepository: BaseRepository) {
         this._baseRepository = baseRepository;
+        reaction(
+            () => this.predicate.keys(),
+            () => {
+                this.page = 0;
+                this.trainingRegestry.clear();
+                this.loadTrainings();
+            }
+        )
     }
+
 
     @observable training: ITraining | null = null;
     @observable loading = false;
@@ -23,16 +34,47 @@ export default class TrainingRepository {
     @observable loadingBuy = false;
     //the hole class will be observe it (Hub connexion SignalR)
     @observable.ref hubConnection: HubConnection | null = null;
+    @observable trainingCount = 0;
+    @observable page = 0
+    @observable predicate = new Map();
+
+    @action setPredicate = (predicate: string, value: string | Date) => {
+        this.predicate.clear();
+        if (predicate !== 'all') {
+            this.predicate.set(predicate, value);
+        }
+    }
+
+    @computed get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('limit', String(LIMIT));
+        params.append('offset', `${this.page ? this.page * LIMIT : 0}`);
+        this.predicate.forEach((value, key) => {
+            if (key === 'startDate') {
+                params.append(key, value.toISOString())
+            } else {
+                params.append(key, value)
+            }
+        })
+        return params;
+    }
 
     @computed get trainingByDate() {
         return this.sortByDate(Array.from(this.trainingRegestry.values()));
+    }
+
+    @computed get totalPages() {
+        return Math.ceil(this.trainingCount / LIMIT);
+    }
+    @action setPage = (page: number) => {
+        this.page = page;
     }
 
     //Hub for Signal token connection
     @action createHubConnection = (trainingId: string) => {
         this.hubConnection = new HubConnectionBuilder()
             //this url must have the same url of server
-            .withUrl('https://localhost:44310/chat', {
+            .withUrl(process.env.REACT_APP_API_CHAT_URL!, {
                 accessTokenFactory: () => this._baseRepository.commonRepository.token!
             })
             .configureLogging(LogLevel.Information)
@@ -84,16 +126,19 @@ export default class TrainingRepository {
         }, {} as { [key: string]: ITraining[] }));
     }
 
-    @action trainingList = async () => {
+    @action loadTrainings = async () => {
+        const isLogged = this._baseRepository.userRepository.isLoggedIn;
         this.loading = true;
         try {
-            const trainings = await agent.trainingAgent.list()
+            const trainingsEnvelope = await agent.trainingAgent.list(this.axiosParams)
+            const { trainings, trainingCount } = trainingsEnvelope;
             runInAction('Loading', () => {
                 trainings.forEach((training) => {
-                    setTrainingProps(training, this._baseRepository.userRepository.user!);
+                    setTrainingProps(training, this._baseRepository.userRepository.user!, isLogged);
                     this.trainingRegestry.set(training.trainingId, training);
                     console.log(training.buyers);
                 });
+                this.trainingCount = trainingCount;
                 this.loading = false;
             })
 
@@ -172,6 +217,7 @@ export default class TrainingRepository {
     }
 
     @action loadTraining = async (id: string) => {
+        const isLogged = this._baseRepository.userRepository.isLoggedIn;
         let training = this.getTraining(id);
         if (training) {
             this.training = training;
@@ -181,7 +227,7 @@ export default class TrainingRepository {
                 this.loading = true;
                 training = await agent.trainingAgent.details(id);
                 runInAction('Loading', () => {
-                    setTrainingProps(training, this._baseRepository.userRepository.user!);
+                    setTrainingProps(training, this._baseRepository.userRepository.user!, isLogged);
                     this.training = training;
                     this.loading = false;
                     console.log(training);
@@ -204,7 +250,7 @@ export default class TrainingRepository {
             await agent.trainingAgent.buy(this.training!.trainingId);
             runInAction(() => {
                 if (this.training) {
-                    this.training.buyers.push(buyer);
+                    this.training.buyers!.push(buyer);
                     this.training.isBuyer = true;
                     this.trainingRegestry.set(this.training.trainingId, this.training);
                     this.loadingBuy = false;
@@ -225,7 +271,7 @@ export default class TrainingRepository {
             await agent.trainingAgent.refund(this.training!.trainingId);
             runInAction(() => {
                 if (this.training) {
-                    this.training.buyers = this.training.buyers.filter(b => b.username !== this._baseRepository.userRepository.user!.username);
+                    this.training.buyers = this.training.buyers!.filter(b => b.username !== this._baseRepository.userRepository.user!.username);
                     this.training.isBuyer = false;
                     this.trainingRegestry.set(this.training.trainingId, this.training);
                     this.loadingBuy = false;

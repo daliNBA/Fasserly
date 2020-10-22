@@ -15,7 +15,7 @@ export default class commonRepository {
                     window.localStorage.setItem('jwt', token);
                 }
                 else {
-                    window.localStorage.getItem('jwt');
+                    window.localStorage.removeItem('jwt')
                 }
             }
         )

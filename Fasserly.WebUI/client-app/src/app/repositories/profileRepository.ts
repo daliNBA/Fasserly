@@ -1,6 +1,6 @@
 ﻿import { BaseRepository } from './baseRepository'
 import { observable, runInAction, action, computed, reaction } from 'mobx';
-import { IProfile, IPhoto } from '../models/IPorfile';
+import { IProfile, IPhoto, IUserTraining } from '../models/IPorfile';
 import agent from '../agent/agent';
 import { toast } from 'react-toastify';
 
@@ -30,6 +30,8 @@ export default class ProfileRepository {
     @observable loading = false;
     @observable followings: IProfile[] = [];
     @observable activeTab: number = 0;
+    @observable userTrainings: IUserTraining[] = [];
+    @observable loadingTraining = false;
 
     @computed get isCurrentUser() {
         if (this.baseRepository.userRepository.user && this.profile)
@@ -41,6 +43,22 @@ export default class ProfileRepository {
     @action setActiveTab = (activeIndex: number) => {
         this.activeTab = activeIndex;
     } 
+
+    @action loadUserTrainings = async (username: string, predicate?: string) => {
+        this.loadingTraining = true;
+        try {
+            const userTraining = await agent.profileAgent.listTrainings(username, predicate!);
+            runInAction(() => {
+                this.userTrainings = userTraining;
+                this.loadingTraining = false;
+            })
+        } catch (e) {
+            toast.error("Problem Uploading photo!");
+            runInAction(() => {
+                this.loadingTraining = false;
+            })
+        }
+    }
 
     @action loadProfile = async (username: string) => {
         try {
