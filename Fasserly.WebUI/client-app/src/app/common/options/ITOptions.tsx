@@ -9,5 +9,6 @@
     { key: '3D', text: '3D', value: '3D' },
     { key: 'Finance', text: 'Finance', value: 'Finance' },
     { key: 'Entrepreneurship', text: 'Entrepreneurship', value: 'Entrepreneurship' },
-    { key: 'Gestion', text: 'Gestion', value: 'Gestion' }
+    { key: 'Gestion', text: 'Gestion', value: 'Gestion' },
+    { key: 'Management', text: 'Management', value: 'Management' }
 ];
