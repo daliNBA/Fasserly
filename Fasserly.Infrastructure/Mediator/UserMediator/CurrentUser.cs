@@ -2,7 +2,6 @@
 using Fasserly.Infrastructure.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,13 +25,11 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _userManager.FindByNameAsync(_userAccessor.GetCurrentUserName());
-                return new User
-                {
-                    Username = user.UserName,
-                    Token = _jwtGenerator.CreateToken(user),
-                    DisplayName = user.DisplayName,
-                    Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-                };
+                var refreshToken = _jwtGenerator.GenerateRefreshToken();
+                user.RefreshTokens.Add(refreshToken);
+                await _userManager.UpdateAsync(user);
+
+                return new User(user, _jwtGenerator, refreshToken.Token);
             }
         }
     }

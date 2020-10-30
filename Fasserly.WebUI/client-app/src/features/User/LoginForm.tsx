@@ -1,12 +1,14 @@
 ﻿import React, { useContext } from 'react';
 import { Form as FinalForm, Field } from 'react-final-form';
-import { Form, Button, Header } from 'semantic-ui-react';
+import { Form, Button, Header, Divider } from 'semantic-ui-react';
 import TextInput from '../../app/common/form/inputText';
 import ErrorMessage from '../../app/common/form/ErrorMessage';
 import { BaseRepositoryContext } from '../../app/repositories/baseRepository';
 import { IUserFromValues } from '../../app/models/IUser';
 import { FORM_ERROR } from 'final-form';
 import { combineValidators, isRequired } from 'revalidate';
+import SocialLogin from './SocialLogin';
+import { observer } from 'mobx-react-lite';
 
 const validate = combineValidators({
     email: isRequired('email'),
@@ -15,7 +17,7 @@ const validate = combineValidators({
 
 const LoginFrom = () => {
     const baseReposiitory = useContext(BaseRepositoryContext);
-    const { login } = baseReposiitory.userRepository;
+    const { login, fbLogin, loading } = baseReposiitory.userRepository;
     return (
         <FinalForm
             onSubmit={(values: IUserFromValues) => login(values).catch(error => ({
@@ -35,10 +37,12 @@ const LoginFrom = () => {
                         content='Login'
                         fluid
                     />
+                    <Divider horizontal>OR</Divider>
+                    <SocialLogin loading={loading} fbCallBack={fbLogin} />
                 </Form>                
                 )}
         />
     );
 }
 
-export default LoginFrom;
+export default observer(LoginFrom);

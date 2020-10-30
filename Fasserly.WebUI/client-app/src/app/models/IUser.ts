@@ -9,5 +9,5 @@ export interface IUserFromValues {
     email: string;
     password: string;
     username?: string;
-    displayName?: string;
+    display: string;
 }

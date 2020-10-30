@@ -7,6 +7,8 @@ import TrainingDashboard from '../../features/Training/defaultDashboard';
 import TrainingEdit from '../../features/Training/form';
 import TrainingDetails from '../../features/Training/detail';
 import ProfilePage from '../../features/Profile/ProfilePage';
+import RegisterSuccess from '../../features/User/RegisterSuccess';
+import VerifyEmail from '../../features/User/VerifyEmail';
 import NotFound from './NoFound';
 import { ToastContainer } from 'react-toastify';
 import { BaseRepositoryContext } from '../repositories/baseRepository';
@@ -19,13 +21,13 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
     const { getUser } = baseRepository.userRepository;
 
     useEffect(() => {
-        if (token) {
+        if (token && !appLoaded) {
             getUser().finally(() => setAppLoaded())
         }
         else {
             setAppLoaded();
         }
-    })
+    }, [getUser, appLoaded, token, setAppLoaded])
     if (!appLoaded) return <Loading content='Loading app ...' />
     return (
         <div>
@@ -40,6 +42,8 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                         <Route key={location.key} exact path={['/createTraining', '/manage/:id']} component={TrainingEdit} />
                         <Route path='/detailTraining/:id' component={TrainingDetails} />
                         <Route path='/profile/:username' component={ProfilePage} />
+                        <Route path='/user/RegisterSuccess' component={RegisterSuccess} />
+                        <Route path='/user/VerifyEmail' component={VerifyEmail} />
                         <Route component={NotFound} />
                     </Switch>
                 </Container>

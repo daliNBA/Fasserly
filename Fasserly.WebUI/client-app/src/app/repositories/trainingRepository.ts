@@ -132,7 +132,7 @@ export default class TrainingRepository {
         try {
             const trainingsEnvelope = await agent.trainingAgent.list(this.axiosParams)
             const { trainings, trainingCount } = trainingsEnvelope;
-            runInAction('Loading', () => {
+            runInAction(() => {
                 trainings.forEach((training) => {
                     setTrainingProps(training, this._baseRepository.userRepository.user!, isLogged);
                     this.trainingRegestry.set(training.trainingId, training);
@@ -143,7 +143,7 @@ export default class TrainingRepository {
             })
 
         } catch (error) {
-            runInAction('loading Error', () => {
+            runInAction(() => {
                 console.log(error);
                 this.loading = false;
             })
@@ -161,14 +161,14 @@ export default class TrainingRepository {
             training.buyers = buyers;
             training.isOwner = true;
             training.comments = [];
-            runInAction('Creating training', () => {
+            runInAction(() => {
                 this.trainingRegestry.set(training.trainingId, training);
                 this.training = training;
                 this.submitting = false;
             })
             history.push(`/detailTraining/${training.trainingId}`);
         } catch (error) {
-            runInAction('Creating training Error', () => {
+            runInAction(() => {
                 this.submitting = false;
                 console.log(error);
             })
@@ -180,7 +180,7 @@ export default class TrainingRepository {
         this.submitting = true;
         try {
             await agent.trainingAgent.update(training);
-            runInAction('editnig', () => {
+            runInAction(() => {
                 this.trainingRegestry.set(training.trainingId, training);
                 this.training = training;
                 this.submitting = false;
@@ -188,7 +188,7 @@ export default class TrainingRepository {
             history.push(`/detailTraining/${training.trainingId}`);
         }
         catch (error) {
-            runInAction('edit Error', () => {
+            runInAction(() => {
                 console.log(error);
                 this.submitting = false;
             })
@@ -226,7 +226,7 @@ export default class TrainingRepository {
             try {
                 this.loading = true;
                 training = await agent.trainingAgent.details(id);
-                runInAction('Loading', () => {
+                runInAction(() => {
                     setTrainingProps(training, this._baseRepository.userRepository.user!, isLogged);
                     this.training = training;
                     this.loading = false;
@@ -234,7 +234,7 @@ export default class TrainingRepository {
                     return training;
                 });
             } catch (e) {
-                runInAction('Edit error', () => {
+                runInAction(() => {
                     console.log(e);
                     this.loading = false;
                 });

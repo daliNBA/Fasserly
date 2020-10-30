@@ -51,14 +51,15 @@ namespace Fasserly.Database
                         Id ="a",
                         DisplayName ="Dali",
                         Email = "dali.mahdoui@gmail.com",
-                        UserName = "dalinba"
+                        UserName = "dalinba",
+                        EmailConfirmed =true
                     },
                       new UserFasserly
                     {
                         Id="b",
                         DisplayName ="Rachida",
                         Email = "rachidachtioui13@yahoo.fr",
-                        UserName = "rachida"
+                        UserName = "rachida",
                     }
                 };
 

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Fasserly.Database;
 using Fasserly.Database.Entities;
+using Fasserly.Infrastructure.Email;
 using Fasserly.Infrastructure.Interface;
 using Fasserly.Infrastructure.Mediator.ProfileMediator;
 using Fasserly.Infrastructure.Mediator.TrainingMediator;
@@ -91,10 +92,14 @@ namespace Fasserly.WebUI
             })
              .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Create>(); });
 
-            var builder = services.AddIdentityCore<UserFasserly>();
+            var builder = services.AddIdentityCore<UserFasserly>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+            });
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<DatabaseContext>();
             identityBuilder.AddSignInManager<SignInManager<UserFasserly>>();
+            identityBuilder.AddDefaultTokenProviders();
 
             //Add Authorization training Owner Requiremnt
             //services.AddAuthorization(opt =>
@@ -141,7 +146,12 @@ namespace Fasserly.WebUI
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.AddScoped<IProfileReader, ProfileReader>();
+            services.AddScoped<IFacebookAccessor, FacebookAccessor>();
+            services.AddScoped<IEMailSender, EmailSender>();
+            //We get those settings from user secrets
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+            services.Configure<FacebookAppSettings>(Configuration.GetSection("Authentication:Facebook"));
+            services.Configure<SendGridSettings>(Configuration.GetSection("SendGrid"));
 
 
             //services.AddControllersWithViews();

@@ -36,7 +36,7 @@ const TrainingDetailedChat = () => {
                             <Comment.Content>
                                 <Comment.Author as={Link} to={`/profile/${comment.username}`}>{comment.diplayName}</Comment.Author>
                                 <Comment.Metadata>
-                                    <div>{formatDistance(comment.dateOfComment, new Date())}</div>
+                                    <div>{formatDistance(new Date(comment.dateOfComment), new Date())}</div>
                                 </Comment.Metadata>
                                 <Comment.Text>{comment.body}</Comment.Text>
                             </Comment.Content>

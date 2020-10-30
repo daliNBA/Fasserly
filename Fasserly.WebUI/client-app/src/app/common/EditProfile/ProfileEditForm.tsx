@@ -27,7 +27,7 @@ const ProfileEditForm: React.FC<IProps> = ({ editProfile, profile }) => {
                     <Field
                         name='displayName'
                         component={TextInput}
-                        placeholder='Display Name'
+                        placeholder='DisplayName'
                         value={profile!.displayName}
                     />
                     <Field

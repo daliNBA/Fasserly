@@ -63,6 +63,10 @@
     <None Remove="client-app\src\features\Training\TrainingListItemBuyers.tsx" />
     <None Remove="client-app\src\features\User\LoginForm.tsx" />
     <None Remove="client-app\src\features\User\RegisterForm.tsx" />
+    <None Remove="client-app\src\features\User\RegisterSuccess.tsx" />
+    <None Remove="client-app\src\features\User\SocialLogin.tsx" />
+    <None Remove="client-app\src\features\User\VerifyEmail.tsx" />
+    <None Remove="client-app\typings-custom\facebook-login-render-props.d.ts" />
     <None Remove="client-app\typings-custom\react-cropper.d.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +135,10 @@
     <TypeScriptCompile Include="client-app\src\features\Training\TrainingListItemBuyers.tsx" />
     <TypeScriptCompile Include="client-app\src\features\User\LoginForm.tsx" />
     <TypeScriptCompile Include="client-app\src\features\User\RegisterForm.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\User\RegisterSuccess.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\User\SocialLogin.tsx" />
+    <TypeScriptCompile Include="client-app\src\features\User\VerifyEmail.tsx" />
+    <TypeScriptCompile Include="client-app\typings-custom\facebook-login-render-props.d.ts" />
     <TypeScriptCompile Include="client-app\typings-custom\react-cropper.d.ts" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties client-app_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

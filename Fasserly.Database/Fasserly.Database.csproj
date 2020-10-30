@@ -23,6 +23,8 @@
     <Compile Remove="Migrations\20201014150133_addComments.Designer.cs" />
     <Compile Remove="Migrations\20201022092308_Update.cs" />
     <Compile Remove="Migrations\20201022092308_Update.Designer.cs" />
+    <Compile Remove="Migrations\20201027083522_AddRefreshToken.cs" />
+    <Compile Remove="Migrations\20201027083522_AddRefreshToken.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

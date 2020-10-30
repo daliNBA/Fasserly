@@ -6,10 +6,11 @@ using Fasserly.Infrastructure.Interface;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,12 +18,13 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
 {
     public class Register
     {
-        public class Command : IRequest<User>
+        public class Command : IRequest
         {
             public string Email { get; set; }
             public string Password { get; set; }
             public string Username { get; set; }
             public string DisplayName { get; set; }
+            public string Origin { get; set; }
         }
 
         public class UserValidation : AbstractValidator<Command>
@@ -36,18 +38,18 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
             }
         }
 
-        public class Handler : BaseDataAccess, IRequestHandler<Command, User>
+        public class Handler : BaseDataAccess, IRequestHandler<Command>
         {
             private readonly UserManager<UserFasserly> _userManager;
-            private readonly IJwtGenerator _jwtGenerator;
+            private readonly IEMailSender _eMailSender;
 
-            public Handler(DbContextOptions<DatabaseContext> options, UserManager<UserFasserly> userManager, IJwtGenerator jwtGenerator) : base(options)
+            public Handler(DbContextOptions<DatabaseContext> options, UserManager<UserFasserly> userManager, IEMailSender eMailSender) : base(options)
             {
                 _userManager = userManager;
-                _jwtGenerator = jwtGenerator;
+                _eMailSender = eMailSender;
             }
 
-            public async Task<User> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (await context.Users.AnyAsync(x => x.Email == request.Email))
                     throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exists" });
@@ -62,19 +64,17 @@ namespace Fasserly.Infrastructure.Mediator.UserMediator
                 };
 
                 var result = await _userManager.CreateAsync(user, request.Password);
+                await _userManager.UpdateAsync(user);
 
-                if (result.Succeeded)
-                {
-                    return new User
-                    {
-                        DisplayName = user.DisplayName,
-                        Token = _jwtGenerator.CreateToken(user),
-                        Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-                        Username = user.UserName,
-                    };
-                }
+                if (!result.Succeeded) throw new Exception("Problem creating user");
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                throw new Exception("Problem saving changes");
+                //ENcode the token with webEncoder
+                token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+                var verifyUrl = $"{request.Origin}/user/verifyEmail?token={token}&email={request.Email}";
+                var message = $"<p>Please click the below link to verify you email adress: <a href='{verifyUrl}'>{verifyUrl}<a/></p>";
+                await _eMailSender.SendEmailAsync(request.Email, "Verify adress", message);
+                return Unit.Value;
             }
         }
     }

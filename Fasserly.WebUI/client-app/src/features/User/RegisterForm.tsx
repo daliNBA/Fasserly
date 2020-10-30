@@ -9,10 +9,10 @@ import { FORM_ERROR } from 'final-form';
 import { combineValidators, isRequired } from 'revalidate';
 
 const validate = combineValidators({
-    email: isRequired('email'),
-    username: isRequired('username'),
-    //diplayName: isRequired('diplayName'),
-    password: isRequired('password'),
+    email: isRequired('Email'),
+    username: isRequired('Username'),
+    displayName: isRequired('DiplayName'),
+    password: isRequired('Password'),
 })
 
 const RegisterFrom = () => {
@@ -27,8 +27,8 @@ const RegisterFrom = () => {
             render={({ handleSubmit, submitting, submitError, invalid, pristine, dirtySinceLastSubmit }) => (
                 <Form onSubmit={handleSubmit} error>
                     <Header as='h2' content='Sign Up to Fasserly' color='blue' textAlign='center' />
-                    <Field name='username' component={TextInput} placeholder='username' />
-                    <Field name='diplayname' component={TextInput} placeholder='diplay Name' />
+                    <Field name='username' component={TextInput} placeholder='Username' />
+                    <Field name='displayName' component={TextInput} placeholder='DisplayName' />
                     <Field name='email' component={TextInput} placeholder='Email' />
                     <Field name='password' component={TextInput} placeholder='Password' type='Password' />
                     {submitError && !dirtySinceLastSubmit && <ErrorMessage error={submitError} />}

@@ -16,6 +16,7 @@ namespace Fasserly.Database
         public DbSet<Photo> Photos { get; set; }
         public DbSet<UserTraining> UserTrainings { get; set; }
         public DbSet<UserFollowing> UserFollowings { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

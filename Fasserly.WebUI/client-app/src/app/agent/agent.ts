@@ -1,7 +1,7 @@
 ﻿import { ITraining, ITrainingEnvelope } from '../models/ITraining';
-import { IProfile, IPhoto, IUserTraining } from '../models/IPorfile';
+import { IProfile, IPhoto } from '../models/IPorfile';
 import { IUser, IUserFromValues } from '../models/IUser';
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 
@@ -82,6 +82,10 @@ const userAgent = {
     current: (): Promise<IUser> => requests.get('/user'),
     login: (user: IUserFromValues): Promise<IUser> => requests.post(`/user/login`, user),
     register: (user: IUserFromValues): Promise<IUser> => requests.post(`/user/register`, user),
+    fbLogin: (accessToken: string) => requests.post(`/user/facebook`, { accessToken }),
+    refreshToken: (): Promise<IUser> => requests.post(`/user/refreshToken`, {}),
+    verifyEmail: (token: string, email: string): Promise<IUser> => requests.post(`/user/verfiyEmail`, { token, email }),
+    resendEmailConfirm: (email: string) => requests.get(`/user/resendEmailVerification?email=${email}`)
 }
 export default {
     trainingAgent,
