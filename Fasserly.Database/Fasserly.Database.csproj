@@ -5,29 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200630204813_test.cs" />
-    <Compile Remove="Migrations\20200630204813_test.Designer.cs" />
-    <Compile Remove="Migrations\20200911120912_cancelTrainingLink.cs" />
-    <Compile Remove="Migrations\20200911120912_cancelTrainingLink.Designer.cs" />
-    <Compile Remove="Migrations\20200916120443_removeComment.cs" />
-    <Compile Remove="Migrations\20200916120443_removeComment.Designer.cs" />
-    <Compile Remove="Migrations\20200916122432_aleterIdentity.cs" />
-    <Compile Remove="Migrations\20200916122432_aleterIdentity.Designer.cs" />
-    <Compile Remove="Migrations\20201002123003_addUserTraining.cs" />
-    <Compile Remove="Migrations\20201002123003_addUserTraining.Designer.cs" />
-    <Compile Remove="Migrations\20201002125104_addUserTraining.cs" />
-    <Compile Remove="Migrations\20201002125104_addUserTraining.Designer.cs" />
-    <Compile Remove="Migrations\20201006142400_userTrainings.cs" />
-    <Compile Remove="Migrations\20201006142400_userTrainings.Designer.cs" />
-    <Compile Remove="Migrations\20201014150133_addComments.cs" />
-    <Compile Remove="Migrations\20201014150133_addComments.Designer.cs" />
-    <Compile Remove="Migrations\20201022092308_Update.cs" />
-    <Compile Remove="Migrations\20201022092308_Update.Designer.cs" />
-    <Compile Remove="Migrations\20201027083522_AddRefreshToken.cs" />
-    <Compile Remove="Migrations\20201027083522_AddRefreshToken.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />

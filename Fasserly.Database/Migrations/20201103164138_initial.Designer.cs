@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fasserly.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20201015154154_addComment")]
-    partial class addComment
+    [Migration("20201103164138_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,6 +101,32 @@ namespace Fasserly.Database.Migrations
                     b.HasKey("PromotionId");
 
                     b.ToTable("Promotions");
+                });
+
+            modelBuilder.Entity("Fasserly.Database.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Revoked")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserFasserlyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserFasserlyId");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Fasserly.Database.Entities.Training", b =>
@@ -222,6 +248,21 @@ namespace Fasserly.Database.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Fasserly.Database.Entities.UserFollowing", b =>
+                {
+                    b.Property<string>("ObserverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TargetId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ObserverId", "TargetId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("UserFollowings");
                 });
 
             modelBuilder.Entity("Fasserly.Database.Entities.UserTraining", b =>
@@ -394,9 +435,16 @@ namespace Fasserly.Database.Migrations
                         .HasForeignKey("UserFasserlyId");
                 });
 
+            modelBuilder.Entity("Fasserly.Database.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Fasserly.Database.Entities.UserFasserly", "UserFasserly")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserFasserlyId");
+                });
+
             modelBuilder.Entity("Fasserly.Database.Entities.Training", b =>
                 {
-                    b.HasOne("Fasserly.Database.Entities.Category", "category")
+                    b.HasOne("Fasserly.Database.Entities.Category", "Category")
                         .WithMany("Trainings")
                         .HasForeignKey("CategoryId");
 
@@ -407,6 +455,21 @@ namespace Fasserly.Database.Migrations
                     b.HasOne("Fasserly.Database.Entities.UserFasserly", null)
                         .WithMany("Trainings")
                         .HasForeignKey("UserFasserlyId");
+                });
+
+            modelBuilder.Entity("Fasserly.Database.Entities.UserFollowing", b =>
+                {
+                    b.HasOne("Fasserly.Database.Entities.UserFasserly", "Observer")
+                        .WithMany("Followings")
+                        .HasForeignKey("ObserverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Fasserly.Database.Entities.UserFasserly", "Target")
+                        .WithMany("Followers")
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Fasserly.Database.Entities.UserTraining", b =>
